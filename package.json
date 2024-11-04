@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "@quasar/extras": "^1.16.12",
+    "quasar": "^2.17.1"
+  },
+  "devDependencies": {
+    "@quasar/vite-plugin": "^1.8.0",
+    "sass-embedded": "^1.80.2"
+  }
+}
