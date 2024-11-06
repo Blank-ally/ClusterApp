@@ -1,6 +1,9 @@
 <script>
+import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
+
 export default {
   name: "LNavList",
+  components: {FontAwesomeIcon},
   // data:    Data created and maintained by this component.
   //          This function is like a constructor. It gets called
   //          separately for each instance of this component
@@ -44,7 +47,7 @@ export default {
       <q-toolbar-title>
         <q-btn flat  href="Clusters.html">
           <q-icon right size="2em">
-            <i class="fa-solid fa-meteor grad"></i>
+
           </q-icon>
           Cluster
         </q-btn>

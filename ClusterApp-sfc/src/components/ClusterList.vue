@@ -1,9 +1,35 @@
 <script>
 import clust from "@/components/models/Clust.js";
+import LSearch from "@/components/LSearch.vue";
+import ClusterItem from "@/components/ClusterItem.vue";
+import Clust from "@/components/models/Clust.js";
 export default {
-  name: "ClusterList",    data: function(){
+  name: "ClusterList",
+  components: {ClusterItem, LSearch},
+  data: function(){
     return {
       filterKeyword: '',
+      /*CLusterList: [
+        new Clust('MilkyWay', 'testing something real quick ' ,true,true,[ "Rare", "common","supernova"], 'cards',[{name:'Absolutno',photo: "pexels-pixabay-41951.jpg",classi:'common',notes:"lorem ipsum"},
+          {name:'star2',photo: "pexels-pixabay-41951.jpg",Classi:'common',notes:"lorem ipsum" },
+          {name:'star3',photo: "pexels-pixabay-41951.jpg",Classi:'common',notes:"lorem ipsum" },
+          {name:'star4',photo: "pexels-pixabay-41951.jpg",Classi:'common',notes:"lorem ipsum" }],false ),
+        new Clust('MilkyWay', 'testing something real quick ' ,true,true,[ "Rare", "common",  "supernova" ], 'cards',[{name:'Absolutno',photo: "pexels-pixabay-41951.jpg",classi:'common',notes:"lorem ipsum"},
+          {name:'star2',photo: "pexels-pixabay-41951.jpg",Classi:'common',notes:"lorem ipsum" },
+          {name:'star3',photo: "pexels-pixabay-41951.jpg",Classi:'common',notes:"lorem ipsum" },
+          {name:'star4',photo: "pexels-pixabay-41951.jpg",Classi:'common',notes:"lorem ipsum" }],false ),
+
+        new Clust('MilkyWay', 'testing something real quick ' ,true,true,["Rare", "common", "supernova"], 'cards',[{name:'Absolutno',photo: "pexels-pixabay-41951.jpg",classi:'common',notes:"lorem ipsum"},
+          {name:'star2',photo: "pexels-pixabay-41951.jpg",Classi:'common',notes:"lorem ipsum" },
+          {name:'star3',photo: "pexels-pixabay-41951.jpg",Classi:'common',notes:"lorem ipsum" },
+          {name:'star4',photo: "pexels-pixabay-41951.jpg",Classi:'common',notes:"lorem ipsum" }],false ),
+
+        new Clust('MilkyWay', 'testing something real quick ' ,true,true,["Rare", "common","supernova"], 'cards',[{name:'Absolutno',photo: "pexels-pixabay-41951.jpg",classi:'common',notes:"lorem ipsum"},
+          {name:'star2',photo: "pexels-pixabay-41951.jpg",Classi:'common',notes:"lorem ipsum" },
+          {name:'star3',photo: "pexels-pixabay-41951.jpg",Classi:'common',notes:"lorem ipsum" },
+          {name:'star4',photo: "pexels-pixabay-41951.jpg",Classi:'common',notes:"lorem ipsum" }],false ),
+
+      ],*/
     }
   },
 
@@ -27,7 +53,11 @@ export default {
     },
     sort(property){
       this.sortProperty = property;
-    }
+    },
+    print(){
+      console.log(this.list)
+    },
+
 
   },
 
@@ -37,10 +67,11 @@ export default {
   //              in data or props.
   computed: {
     filteredlist(){
-      return this.list.filter(clust => {
+      console.log("This is running")
+ return this.list.filter(clust => {
         return clust.name.toLowerCase().includes(this.filterKeyword.toLowerCase())
 
-      })
+     })
 
     }
 
@@ -51,11 +82,11 @@ export default {
 <template>
   <div>
     <div class="col-6 col-md-4">
-      <l-search :onSearch="search"></l-search>
+    <l-search :onSearch="search"></l-search>
     </div>
     <div class="row q-col-gutter-md">
       <div class="col-lg-4 col-sm-6" v-for="cluster in filteredlist">
-        <cluster-item :cluster="cluster"></cluster-item>
+     <cluster-item :cluster="cluster"></cluster-item>
       </div>
     </div>
   </div>

@@ -3,10 +3,20 @@
 import Clust from "@/components/models/Clust.js";
 import Star from "@/components/models/Star.js";
 import Classification from "@/components/models/Classification.js";
+import LNavList from "@/components/LNavList.vue"
 import _ from "lodash"
+import ClassificationList from "@/components/ClassificationList.vue";
+import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
+import ClusterList from "@/components/ClusterList.vue";
+import ClusterItem from "@/components/ClusterItem.vue";
+import {RouterLink,RouterView} from "vue-router";
 
-  // data: all the data for the Cluster, must return an object
+// data: all the data for the Cluster, must return an object
  export default{ components: {
+     ClusterList,
+     FontAwesomeIcon,
+     ClassificationList,
+     LNavList
 
    },
     data: function() {
@@ -52,8 +62,9 @@ import _ from "lodash"
         'cards'
 
       ],
+
       pages:[
-        {name:'Clusters', href:'Clusters.html'}
+        {name:'Clusters', href:'Clusters.vue'}
       ],
       rightDrawerOpen: false,
       confirm: false,
@@ -286,78 +297,45 @@ import _ from "lodash"
 <template>
   <div>
 
+
     <q-layout view="hHh lpR fFf">
-
-      <l-nav-list :pages="pages"></l-nav-list>
-
-      <q-drawer v-model="rightDrawerOpen" side="right" overlay elevated>
-        <!-- drawer content -->
-      </q-drawer>
-
+    <l-nav-list :pages="pages"></l-nav-list>
       <q-page-container>
 
 
-        <div class="row justify-center ">
+<!--      <q-drawer v-model="rightDrawerOpen" side="right" overlay elevated>
+        &lt;!&ndash; drawer content &ndash;&gt;
+      </q-drawer>-->
+
+
+        <div class="row justify-center">
           <div class="col-6 text-center text-h3 q-pa-lg">
-            New Cluster
+            Clusters
           </div>
         </div>
 
-        <div class="q-pa-xl" style="max-width:400px;max-height: 1000px">
+        <div class="row q-col-gutter-lg self-center">
+          <div class="col-4">
+            <div class=" q-px-lg">
 
-          <q-form
-              @submit.prevent="addNewCluster"
-              @reset="onReset"
-              class="q-gutter-sm" >
-
-            <q-input
-                filled
-                v-model="newCluster.name"
-                label="Cluster Name *"
-                lazy-rules
-                bg-color="white"
-                :rules="[ val => val && val.length > 0 || 'Please type something']"
-            ></q-input>
-
-
-            <q-input  filled
-                      label="New Classification"
-                      v-model="classification.name"
-                      lazy-rules
-                      bg-color="white">
-              <q-btn round dense flat icon="add"@click="addClassification(classification.name)" ></q-btn>
-            </q-input>
-
-
-            <classification-list :list="newCluster.classifications"></classification-list>
-
-
-            <q-toggle v-model="newCluster.public" label="Public" ></q-toggle>
-
-            <q-toggle v-model="newCluster.favorite" label="Favorite" ></q-toggle>
-
-            <q-select standout v-model="newCluster.type" :options="clusterTypes" label="Collection Type"  bg-color="white"></q-select>
-
-
-
-
-            <q-btn label="Submit" type="submit" color="primary"></q-btn>
-
-            <q-btn label="Reset" type="" color="primary" class="q-ml-lg"></q-btn>
-
-
-
-
-
-
-          </q-form>
-
+              <q-btn flat color="primary"  href="/views/NewCluster.vue">
+                <q-icon left size="1em">
+<!--                  <font-awesome-icon :icon="['fas', 'circle-plus']"> <RouterLink to="/NewCluster"></RouterLink></font-awesome-icon>
+               --> </q-icon>
+                New Cluster
+              </q-btn>
+            </div>
+          </div>
         </div>
-
-<router-view></router-view>
+        <div class="row q-col-gutter-lg self-center justify-center">
+          <div class="col-8">
+            <cluster-list :list="CLusterList"></cluster-list>
+          </div>
+        </div>
       </q-page-container>
 
     </q-layout>
+
   </div>
 </template>
 
