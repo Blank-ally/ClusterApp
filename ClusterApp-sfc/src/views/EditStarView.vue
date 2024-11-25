@@ -5,12 +5,6 @@
 <template>
   <q-layout view="hHh lpR fFf">
 
-    <l-nav-list :pages="pages"></l-nav-list>
-
-    <q-drawer v-model="rightDrawerOpen" side="right" overlay elevated>
-      <!-- drawer content -->
-    </q-drawer>
-
     <q-page-container>
       <div class="row justify-center ">
         <div class="col-6 text-center text-h3 q-pa-lg">

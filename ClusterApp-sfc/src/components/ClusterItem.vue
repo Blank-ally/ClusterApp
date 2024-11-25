@@ -1,4 +1,10 @@
 <script>
+
+
+
+
+import Clust from "@/components/models/Clust.js";
+
 export default {
   name: "ClusterItem",
   data: function(){
@@ -14,7 +20,7 @@ export default {
   //          are pass-by-value.
   props: {
     cluster:{
-      type: Object,
+      type: Clust,
       required: true
     }
 
@@ -22,10 +28,14 @@ export default {
 
   // methods: Usually "events" triggered by v-on:
   methods: {
-    SetCurrentCluster() {
 
+    SetCurrentCluster() {
+debugger;
       this.currentCluster = this.cluster;
-      window.location.href = 'Cluster.html'
+      console.log(this.currentCluster)
+      //this.$router.push('/cluster')
+     this.$router.push({ path: '/cluster/:currentCluster', params: this.cluster})
+    //  window.location.href = 'Cluster.html'
 
     },
 
@@ -50,7 +60,7 @@ export default {
 
   // watch:   calls the function if the value changes
   // https://travishorn.com/add-localstorage-to-your-vue-app-in-2-lines-of-code-56eb2c9f371b
-  watch: {
+/*  watch: {
     currentCluster:{
       //this.shoppingList // = old list before the list is updated
       handler(){
@@ -58,13 +68,13 @@ export default {
       },
       deep: true,
     }
-  }
+  }*/
 }
 </script>
 
 <template>
 
-  <q-card class="my-card cursor-pointer" @click="SetCurrentCluster()">
+  <q-card class="my-card cursor-pointer"  @click="SetCurrentCluster" >  <!-- @click="SetCurrentCluster()-->
     <div class="row">
       <div v-for="(star, x) in cluster.Stars" class="col-6">
         <img style="max-height: 90px; max-width: 150px;width: 100%; height: 100%;" v-if="x <= 3 " :src="star.photo"/>
@@ -74,10 +84,9 @@ export default {
 
       <div class="text-h6">{{cluster.name}}</div>
 
-
     </q-card-section>
-
   </q-card>
+
 </template>
 
 <style scoped>

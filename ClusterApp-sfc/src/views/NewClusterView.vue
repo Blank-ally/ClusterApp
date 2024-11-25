@@ -1,16 +1,28 @@
 <script >
 
 import App from "@/App.vue";
+
+import newCluster from "@/components/ClusterList.vue";
+import Clust from "@/components/models/Clust.js";
+import ClassificationList from "@/components/ClassificationList.vue";
+import addClassification from "@/components/ClusterList.vue";
+import addNewCluster from "@/components/ClusterList.vue";
+
+export default {
+  name: "Cluster",
+  data: function() {
+    return {
+      newCluster: new Clust (),
+    }},
+  components: {newCluster,ClassificationList,addNewCluster},
+}
+
+// TODO: request the cluster tpes pull  from the database
+
 </script>
 
 <template>
-  <q-layout view="hHh lpR fFf">
 
-    <l-nav-list :pages="pages"></l-nav-list>
-
-    <q-drawer v-model="rightDrawerOpen" side="right" overlay elevated>
-      <!-- drawer content -->
-    </q-drawer>
 
     <q-page-container>
 
@@ -24,7 +36,7 @@ import App from "@/App.vue";
       <div class="q-pa-xl row justify-center ">
         <div class="col-6">
           <q-form
-              @submit.prevent="addNewCluster"
+              submit.prevent="addNewCluster"
 
               class="q-gutter-sm">
 
@@ -40,11 +52,12 @@ import App from "@/App.vue";
 
             <q-input  filled
                       label="New Classification"
-                      v-model="classification.name"
+                      l-model="classification.name"
                       lazy-rules
                       bg-color="white">
-              <q-btn round dense flat icon="add"@click="addClassification(classification.name)" ></q-btn>
+              <q-btn round dense flat icon="add" click="addClassification()" ></q-btn>
             </q-input>
+
 
 
             <classification-list :list="newCluster.classifications"></classification-list>
@@ -76,7 +89,7 @@ import App from "@/App.vue";
 
     </q-page-container>
 
-  </q-layout>
+
 </template>
 
 <style scoped>

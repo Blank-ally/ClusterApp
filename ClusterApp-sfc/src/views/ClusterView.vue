@@ -1,6 +1,27 @@
-<template><!--  <q-layout view="hHh lpR fFf">
+<script >
 
-    <l-nav-list :pages="pages"></l-nav-list>
+import Cluster from "@/components/models/Clust.js";
+import StarList from "@/components/StarList.vue";
+import Star from "@/components/models/Star.js";
+
+export default {
+  name: "Cluster/:currentCluster",
+  data: function() {
+    return {
+      confirm: false,
+    }},
+
+  components: {StarList},
+  props: {
+    currentCluster:{
+      type: Cluster,
+      required: true
+    }
+
+  }}
+
+</script>
+<template>
 
     <q-page-container>
 
@@ -14,7 +35,7 @@
               </q-card-section>
 
               <q-card-actions align="around">
-                <q-btn padding="lg xl" flat @click="setEditCluster" class="p-4">
+                <q-btn padding="lg xl" flat click="setEditCluster" class="p-4">
                   <q-icon left >
                     <i class="fa-solid fa-pen-to-square"></i>
                   </q-icon>
@@ -34,7 +55,7 @@
       <div class="row q-col-gutter-lg self-center">
         <div class="col-5">
           <div class=" q-pa-lg">
-            <q-btn flat color="primary"  href="NewStar.html">
+            <q-btn flat color="primary"  to="/NewStar">
               <q-icon left size="1em">
                 <i class="fa-solid fa-circle-plus fa-2x" ></i> </q-icon>
               New Star
@@ -48,13 +69,13 @@
       </div>
       <div class="row q-col-gutter-lg self-center justify-center">
         <div class="col-8">
-          <star-list :list="currentCluster.Stars"></star-list>
+        <star-list :list="currentCluster.Stars"></star-list>
         </div>
       </div>
 
 
 
-      &lt;!&ndash; modal &ndash;&gt;
+      <!-- modal -->
       <q-dialog v-model="confirm" persistent >
         <q-card  style="width: 700px; max-width: 80vw;">
           <q-card-section class="row items-center">
@@ -69,7 +90,7 @@
 
           <q-card-actions align="right">
             <div class="q-gutter-xl">
-              <q-btn flat label="Delete" color="primary" v-close-popup @click="deleteCluster(currentCluster)"></q-btn>
+              <q-btn flat label="Delete" color="primary" v-close-popup click="deleteCluster(currentCluster)"></q-btn>
             </div>
             <div class="q-gutter-xl">
               <q-btn flat label="Cancel" color="primary" v-close-popup ></q-btn>
@@ -80,8 +101,7 @@
 
     </q-page-container>
 
-  </q-layout>-->
-  world
+
 
 </template>
 
@@ -94,3 +114,4 @@
   }
 }*/
 </style>
+

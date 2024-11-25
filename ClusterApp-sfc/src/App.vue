@@ -8,10 +8,8 @@ import _ from "lodash"
 import ClassificationList from "@/components/ClassificationList.vue";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import ClusterList from "@/components/ClusterList.vue";
-import ClusterItem from "@/components/ClusterItem.vue";
-import {RouterLink,RouterView} from "vue-router";
+import User from '@/components/models/User.js'
 
-// data: all the data for the Cluster, must return an object
  export default{ components: {
      ClusterList,
      FontAwesomeIcon,
@@ -68,6 +66,7 @@ import {RouterLink,RouterView} from "vue-router";
       ],
       rightDrawerOpen: false,
       confirm: false,
+      authUser: new User(),
 
     }
   },
@@ -190,13 +189,8 @@ import {RouterLink,RouterView} from "vue-router";
       this.CLusterList[ind].Stars[sind].Trade = this.editStar.Trade
       this.CLusterList[ind].Stars[sind].Cluster = this.editStar.Cluster
 
-
-
       this.currentCluster =  this.CLusterList[ind]
-      window.location.href = 'Cluster.html';
-
-
-
+      //window.location.href = 'Cluster.html';
 
     },
     toggleRightDrawer() {
@@ -206,12 +200,9 @@ import {RouterLink,RouterView} from "vue-router";
 
   // computed: values that are updated and cached if dependencies change
   computed: {
-    StarList(){
-      return this.StarList().filter(function (item){
-        return item.Cluster = 'MilkyWay' // retrun the search results
-      })
 
-    }
+
+     
 
   },
 
@@ -219,78 +210,9 @@ import {RouterLink,RouterView} from "vue-router";
   mounted: function () {
 // this could also be done in the crated block as well
 
-    if(localStorage.getItem('currentCluster')){
-      this.currentCluster = JSON.parse(localStorage.getItem('currentCluster'))
-    }
-    if(localStorage.getItem('currentStar')){
-      this.currentStar = JSON.parse(localStorage.getItem('currentStar'))
-    }
-    if(localStorage.getItem('CLusterList')){
-      this.CLusterList = JSON.parse(localStorage.getItem('CLusterList'))
-    }
-    /*   if(localStorage.getItem('newCluster')){
-            this.newCluster = JSON.parse(localStorage.getItem('newCluster'))
-        }*/
-    if(localStorage.getItem('editCluster')){
-      this.editCluster = JSON.parse(localStorage.getItem('editCluster'))
-    }
-    if(localStorage.getItem('editStar')){
-      this.editStar = JSON.parse(localStorage.getItem('editStar'))
-    }
   },
 
-  // watch:   calls the function if the value changes
-  // https://travishorn.com/add-localstorage-to-your-vue-app-in-2-lines-of-code-56eb2c9f371b
-  watch: {
-    currentCluster:{
-      //this.shoppingList // = old list before the list is updated
-      handler(){
-        localStorage.setItem('currentCluster',JSON.stringify(this.currentCluster))
-      },
-      deep: true,
-    },
-    currentStar:{
-      //this.shoppingList // = old list before the list is updated
-      handler(){
-        localStorage.setItem('currentStar',JSON.stringify(this.currentStar))
-      },
-      deep: true,
 
-    },
-    CLusterList:{
-      //this.shoppingList // = old list before the list is updated
-      handler(newList){
-        localStorage.setItem('CLusterList',JSON.stringify(this.CLusterList))
-      },
-      deep: true,
-
-    },
-    /* newCluster:{
-         //this.shoppingList // = old list before the list is updated
-         handler(newList){
-             localStorage.setItem('newCluster',JSON.stringify(this.newCluster))
-         },
-         deep: true,
-
-     },*/
-    editCluster:{
-      //this.shoppingList // = old list before the list is updated
-      handler(newList){
-        localStorage.setItem('editCluster',JSON.stringify(this.editCluster))
-      },
-      deep: true,
-
-    },
-    editStar:{
-      //this.shoppingList // = old list before the list is updated
-      handler(newList){
-        localStorage.setItem('editStar',JSON.stringify(this.editStar))
-      },
-      deep: true,
-
-    }
-
-  }
 }
 </script>
 
@@ -299,40 +221,12 @@ import {RouterLink,RouterView} from "vue-router";
 
 
     <q-layout view="hHh lpR fFf">
-    <l-nav-list :pages="pages"></l-nav-list>
+    <l-nav-list :pages="pages" :list="CLusterList"></l-nav-list>
       <q-page-container>
+        <router-view :list="CLusterList" :currentCluster="currentCluster" :currentStar="currentStar" :auth-user="authUser"></router-view>
 
-
-<!--      <q-drawer v-model="rightDrawerOpen" side="right" overlay elevated>
-        &lt;!&ndash; drawer content &ndash;&gt;
-      </q-drawer>-->
-
-
-        <div class="row justify-center">
-          <div class="col-6 text-center text-h3 q-pa-lg">
-            Clusters
-          </div>
-        </div>
-
-        <div class="row q-col-gutter-lg self-center">
-          <div class="col-4">
-            <div class=" q-px-lg">
-
-              <q-btn flat color="primary"  href="/views/NewCluster.vue">
-                <q-icon left size="1em">
-<!--                  <font-awesome-icon :icon="['fas', 'circle-plus']"> <RouterLink to="/NewCluster"></RouterLink></font-awesome-icon>
-               --> </q-icon>
-                New Cluster
-              </q-btn>
-            </div>
-          </div>
-        </div>
-        <div class="row q-col-gutter-lg self-center justify-center">
-          <div class="col-8">
-            <cluster-list :list="CLusterList"></cluster-list>
-          </div>
-        </div>
       </q-page-container>
+
 
     </q-layout>
 

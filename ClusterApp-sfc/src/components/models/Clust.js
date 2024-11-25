@@ -1,23 +1,67 @@
-export default function  Clust (name,description,isPublic, favorite, classifications, type, Stars,  complete)
-{
-    this.name = name ?? '';
-    this.description = description ?? '';
-    this.isPublic = isPublic ?? false;
-    this.favorite = favorite ?? false;
-    this.classifications = classifications ?? [];
-    this.type = type ?? '';
-    this.Stars = Stars ?? [];
-    this.complete = complete ?? false;
+import Star from "@/components/models/Star.js";
+import Classification from "@/components/models/Classification.js";
 
-    const date = new Date();
+export default class Cluster {
+    id;
+    name;
+    description;
+    isPublic;
+    favorite;
+    creationDate;
+    displayURL = [];
+    classifications = [];
+    stars = [];
 
-    let day = date.getDate();
-    let month = date.getMonth() + 1;
-    let year = date.getFullYear();
 
-// This arrangement can be altered based on how we want the date's format to appear.
-    let currentDate = `${month}-${day}-${year}`
 
-    this.creationDate = currentDate
+    constructor(name,description,isPublic, favorite) {
+        this.name = name ?? '';
+        this.description = description ?? '';
+        this.isPublic = isPublic ?? false;
+        this.favorite = favorite ?? false;
+        this.creationDate =  this.getCurrentDate();
 
+    }
+
+    getCurrentDate(){
+
+        const date = new Date();
+
+        let day = date.getDate();
+        let month = date.getMonth() + 1;
+        let year = date.getFullYear();
+
+        return `${month}-${day}-${year}`;
+
+    }
+
+    addStar(star = new Star()){
+        this.stars.push(star);
+        return this;
+    }
+    addClassification(classification = new Classification()){
+        this.classifications.push(classification);
+        return this;
+    }
+
+
+    toFirestore() {
+        let name = this.name;
+        let description = this.description;
+        let isPublic = this.isPublic; 
+        let favorite = this.favorite; 
+        let creationDate =  this.creationDate;
+        
+
+        return {name, description, isPublic, favorite, creationDate};
+    }
+
+    static fromFirestore(snapshot, options) {
+        const data = snapshot.data(options);
+
+        const cluster = new Cluster (data.name, data.description, data.isPublic, data.favorite, data.creationDate);
+        cluster.id = snapshot.id || 0;
+
+        return cluster;
+    }
 };

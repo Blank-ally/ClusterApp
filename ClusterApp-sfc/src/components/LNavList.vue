@@ -8,7 +8,9 @@ export default {
   //          This function is like a constructor. It gets called
   //          separately for each instance of this component
   data: function(){
-    return {}
+    return {
+      rightDrawerOpen: false,
+    }
   },
 
   // props:   Data passed into the component via attributes.
@@ -17,6 +19,10 @@ export default {
   //          are pass-by-value.
   props: {
     pages: {
+      type: Array,
+      required: true
+    },
+    list: {
       type: Array,
       required: true
     }
@@ -45,17 +51,16 @@ export default {
   <q-header elevated >
     <q-toolbar>
       <q-toolbar-title>
-        <q-btn flat  href="Clusters.html">
-          <q-icon right size="2em">
-
-          </q-icon>
+        <q-btn flat  to="/"  :list="list">
+          <q-icon name="fa-solid fa-meteor grad" right size="2em"/>
           Cluster
         </q-btn>
 
       </q-toolbar-title>
 
-      <q-btn dense flat round icon="menu" @click="toggleRightDrawer" />
     </q-toolbar>
+
+
   </q-header>
 
 </template>

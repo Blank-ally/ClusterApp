@@ -1,13 +1,16 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import Cluster from '../views/Cluster.vue'
-import NewCluster from '../views/NewCluster.vue'
-import EditCluster from '../views/EditCluster.vue'
-import NewStar from '../views/NewStar.vue'
-import EditStar from '../views/EditStar.vue'
-import ClusterList from "@/components/ClusterList.vue";
-import app from "@/App.vue";
-const foo = {template :'<div>foo</div>'}
+import ClusterView from '../views/ClusterView.vue'
+import NewClusterView from '../views/NewClusterView.vue'
+import EditClusterView from '../views/EditClusterView.vue'
+import NewStarView from '../views/NewStarView.vue'
+import EditStarView from '../views/EditStarView.vue'
+import ClusterCollectionView from "@/views/ClusterCollectionView.vue";
+import ErrorView from "@/views/ErrorView.vue";
+import ProfileView from "@/views/ProfileView.vue";
+import settingsView from "@/views/SettingsView.vue";
+import PageNotFoundView from "@/views/PageNotFoundView.vue";
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,38 +19,64 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
-     // props: {ClusterList }
+
 
     },
     {
-      path: '/Cluster',
+      path: '/ClusterCollection',
+      name: 'ClusterCollection',
+      component: ClusterCollectionView,
+
+
+    },
+    {
+      path: '/Cluster/:currentCluster',
       name: 'Cluster',
-      component: Cluster
+      component: ClusterView,
+      props:true
+
     },
     {
       path: '/NewCluster',
       name: 'NewCluster',
-      component: NewCluster
+      component: NewClusterView
     },
     {
       path: '/EditCluster',
       name: 'EditCluster',
-      component: EditCluster
+      component: EditClusterView
     },
     {
       path: '/NewStar',
       name: 'NewStar',
-      component: NewStar
+      component: NewStarView
     },
     {
       path: '/EditStar',
       name: 'EditStar',
-      component: EditStar
+      component: EditStarView
     },
-   {
-      path:'/foo',
-      component:foo
-    }
+    {
+      path: '/Error',
+      name: 'Error',
+      component: ErrorView,
+    },
+    {
+      path: '/Profile',
+      name: 'Profile',
+      component: ProfileView,
+    },
+    {
+      path: '/Settings',
+      name: 'Settings',
+      component: settingsView,
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'PageNotFound',
+      component: PageNotFoundView,
+    },
+
 
  /*   {
       path: '/about',
@@ -55,7 +84,7 @@ const router = createRouter({
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import('../views/Cluster.vue')
+      component: () => import('../views/ClusterView.vue')
     }*/
   ]
 })

@@ -1,15 +1,23 @@
-<script setup>
+<script >
+/*import newStar from "@/views/NewStarView.vue";*/
+import Star from "@/components/models/Star.js";
 
+
+
+
+export default {
+  name: "NewStar",
+  data: function() {
+    return {
+      newStar: new Star() ,
+    }},
+
+}
 </script>
 
 <template>
-  <q-layout view="hHh lpR fFf">
 
-    <l-nav-list :pages="pages"></l-nav-list>
 
-    <q-drawer v-model="rightDrawerOpen" side="right" overlay elevated>
-      <!-- drawer content -->
-    </q-drawer>
 
     <q-page-container>
       <div class="row justify-center ">
@@ -21,15 +29,15 @@
       <div class="q-pa-xl row justify-center ">
         <div class="col-6">
           <q-form
-              @submit="addNewStar"
-              @reset="onReset"
+              submit="addnewStar"
+              reset="onReset"
               class="q-gutter-xl"
           >
 
             <div class="q-pa-md">
               <div class="q-col-gutter-md row justify-center">
                 <div class="col-6">
-                  <q-img :src="NewStar.photo" :ratio="4/3">
+                  <q-img :src="newStar.photo" :ratio="4/3">
 
                   </q-img>
                 </div>
@@ -40,7 +48,7 @@
 
             <q-input
                 filled
-                v-model="NewStar.photo"
+                v-model="newStar.photo"
                 label="Star img"
                 lazy-rules
                 bg-color="white"
@@ -50,7 +58,7 @@
 
             <q-input
                 filled
-                v-model="NewStar.name"
+                v-model="newStar.name"
                 label="Star Name"
                 lazy-rules
                 bg-color="white"
@@ -59,7 +67,7 @@
             ></q-input>
             <q-input
                 filled
-                v-model="NewStar.cluster"
+                v-model="newStar.cluster"
                 label="Cluster"
                 lazy-rules
                 disabled
@@ -67,13 +75,13 @@
             >
             </q-input>
 
-            <q-select standout v-model="NewStar.classi" :options="currentCluster.classifications.map(item => ({value: item, label: item.name}))" label="Classifications"  bg-color="white"></q-select>
+            <q-select standout v-model="newStar.classi"  label="Classifications"  bg-color="white"></q-select> <!--:options="currentCluster.classifications.map(item => ({value: item, label: item.name}))"-->
 
 
             <q-input
                 filled
                 type="number"
-                v-model="NewStar.qty"
+                v-model="newStar.qty"
                 label="Qty"
                 lazy-rules
                 bg-color="white"
@@ -83,7 +91,7 @@
           ]"
             ></q-input>
             <q-input
-                v-model="NewStar.notes"
+                v-model="newStar.notes"
                 filled
                 label="Notes"
                 type="textarea"
@@ -91,7 +99,7 @@
             ></q-input>
 
 
-            <q-toggle v-model="NewStar.Trade" label="Trade" ></q-toggle>
+            <q-toggle v-model="newStar.Trade" label="Trade" ></q-toggle>
 
 
 
@@ -109,7 +117,6 @@
     </q-page-container>
 
 
-  </q-layout>
 </template>
 
 <style scoped>
