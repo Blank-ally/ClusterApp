@@ -7,7 +7,7 @@ import Star from "@/components/models/Star.js";
 
 
 export default class UserCollection {
-    static COLLECTION_NAME = 'countItUsers';
+    static COLLECTION_NAME = 'ClusterUsers';
     /**
      * @param {string} uid
      */

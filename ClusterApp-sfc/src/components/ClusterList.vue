@@ -3,6 +3,7 @@ import clust from "@/components/models/Clust.js";
 import LSearch from "@/components/LSearch.vue";
 import ClusterItem from "@/components/ClusterItem.vue";
 import Clust from "@/components/models/Clust.js";
+//TODO:Get list from  database
 export default {
   name: "ClusterList",
   components: {ClusterItem, LSearch},
@@ -48,8 +49,8 @@ export default {
   computed: {
     filteredlist(){
       console.log("This is running")
- return this.list.filter(clust => {
-        return clust.name.toLowerCase().includes(this.filterKeyword.toLowerCase())
+        return this.list.filter(Clust => {
+        return Clust.name.toLowerCase().includes(this.filterKeyword.toLowerCase())
 
      })
 
@@ -63,6 +64,7 @@ export default {
   <div>
     <div class="col-6 col-md-4">
     <l-search :onSearch="search"></l-search>
+<!--      TODO: change to request to  database -->
     </div>
     <div class="row q-col-gutter-md">
       <div class="col-lg-4 col-sm-6" v-for="cluster in filteredlist">

@@ -32,7 +32,7 @@ export default {
   methods: {
 
   loginWithGoogle() {
-      signInWithPopup(auth,authProvider).then() // .then not required in case of wanting to  do  more with  tokens
+      signInWithPopup(auth,authProvider).then(()=> router.push('/ClusterCollection')) // .then not required in case of wanting to  do  more with  tokens
          .catch(error => console.log('Login error! '+ error)) // my code will not hava notification  model unless i make one
     },
     logout() {
@@ -51,6 +51,11 @@ export default {
             let errorMessage = error.message;
             console.log(`${errorMessage} ${errorCode}`);
           });
+      this.authUser.displayName = '';
+
+
+
+
     },
     SignInWithUsers(){
       signInWithEmailAndPassword(auth, email, password)
@@ -63,10 +68,6 @@ export default {
   },
  created() {
     // TODO: start session
-
-    // test user to get app working WITHOUT logins
-    //
-    // const firebaseUser = {uid: 'test', displayName: 'Joe Schmo', email: 'joe@schmo.com' }
 
     onAuthStateChanged(auth , firebaseUser => {
       if(firebaseUser){

@@ -13,6 +13,7 @@ export default {
     }},
 
 }
+// TODO:ask tyler about making the this a stack for mobile but stay  split like the og
 </script>
 
 <template>
