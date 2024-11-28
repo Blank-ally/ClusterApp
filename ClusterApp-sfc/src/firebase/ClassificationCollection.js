@@ -1,12 +1,7 @@
 //TODO: refactor file
 
 import {collection, doc, getDoc, getDocs, addDoc, deleteDoc, onSnapshot, setDoc, query, where, orderBy} from "firebase/firestore";
-
-import UserCollection from "@/firebase/UserCollection.js";
 import ClusterCollection from "@/firebase/ClusterCollection.js";
-
-import User from "@/components/models/User.js";
-import Cluster from "@/components/models/Clust.js";
 import Classification from "@/components/models/Classification.js";
 
 export default class ClassificationCollection {
@@ -18,7 +13,7 @@ export default class ClassificationCollection {
      * @returns {Promise<*>}
      */
     static async getClassifications(user, cluster) {
-        const classificationsCollection = ClassificationCollection.getClassificationsCollection(user, cluster);
+        const classificationsCollection = ClassificationCollection.getClassificationCollection(user, cluster);
         const docsSnap = await getDocs(classificationsCollection.withConverter(Classification));
         return docsSnap.docs.map(docRef => docRef.data());
     }
@@ -30,7 +25,7 @@ export default class ClassificationCollection {
      * @param {Classification[]} classifications
      */
     static syncClassifications(user, cluster, classifications) {
-        const classificationsCollection = ClassificationCollection.getClassificationsCollection(user, cluster);
+        const classificationsCollection = ClassificationCollection.getClassificationCollection(user, cluster);
         const ClassificationsQuery = query(
             classificationsCollection,
             orderBy('time')
@@ -47,7 +42,7 @@ export default class ClassificationCollection {
     /**
      * @param {User} user
      * @param {Cluster} cluster
-     * @param {classification} classification
+     * @param {Classification} classification
      */
     static async deleteClassification(user, cluster, classification) {
         const classificationDoc = ClassificationCollection.getClassificationDoc(user, cluster, classification);

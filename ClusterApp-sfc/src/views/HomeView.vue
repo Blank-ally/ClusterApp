@@ -5,8 +5,9 @@ import LSearch from "@/components/LSearch.vue";
 import User from "@/components/models/User.js";
 import {db,auth, authProvider} from "@/firebase/index.js";
 import UserCollection from "@/firebase/UserCollection.js";
-import {onAuthStateChanged,createUserWithEmailAndPassword, signInWithPopup, signOut} from "firebase/auth";
+import {onAuthStateChanged,createUserWithEmailAndPassword, signInWithPopup, signOut,signInWithEmailAndPassword} from "firebase/auth";
 import {computed} from "vue";
+import router from "@/router/index.js";
 
 
 
@@ -53,12 +54,10 @@ export default {
           });
       this.authUser.displayName = '';
 
-
-
-
     },
-    SignInWithUsers(){
+    SignInWithUsers(email, password){
       signInWithEmailAndPassword(auth, email, password)
+          .then(() => console.log("LOGGED IN "))
           .catch(function(error) {
             let errorCode = error.code;
             let errorMessage = error.message;
@@ -66,40 +65,6 @@ export default {
           });
     }
   },
- created() {
-    // TODO: start session
-
-    onAuthStateChanged(auth , firebaseUser => {
-      if(firebaseUser){
-        console.log('logged in')
-        UserCollection.getUser(firebaseUser.uid)
-            .then(dbUser => {
-              if (dbUser && dbUser.exists()) {
-                // we have an existing user
-                return dbUser;
-              } else {
-                // create new user
-                const newUser = new User(firebaseUser.displayName, firebaseUser.email, firebaseUser.photoURL, 2000);
-                newUser.id = firebaseUser.uid;
-
-                console.log('Creating new user.', newUser);
-                return UserCollection.setUser(newUser);
-              }
-            })
-            .then(() => {
-              UserCollection.syncUser(firebaseUser.uid, this.authUser);
-            })
-           // .catch(error => Notification.error('Error with login.', {firebaseUser, error}));
-      }else{
-        console.log('logged out')
-        this.authUser = new User();
-      }
-    })
-
-
-
-  },
-
 }
 
 </script>
@@ -117,7 +82,8 @@ export default {
     </q-card-section>
     <q-card-section>
       <q-btn style="
-  border-radius: 8px;" color="dark" rounded size="md" label="Sign in" no-caps class="full-width" @click="CreateWithUser(authUser.email,authUser.password)"></q-btn>
+  border-radius: 8px;" color="dark" rounded size="md" label="Sign up" no-caps class="full-width" @click="CreateWithUser(authUser.email,authUser.password)"></q-btn>
+      <q-btn style="border-radius: 8px;" color="dark" rounded size="md" label="Sign in" no-caps class="full-width" @click="SignInWithUsers(authUser.email,authUser.password)"></q-btn>
     </q-card-section>
     <q-card-section class="text-center q-pt-none">
       <div class="text-grey-8">Don't have an account yet?

@@ -1,7 +1,7 @@
 import {collection, doc, getDoc, getDocs, addDoc, deleteDoc, onSnapshot, setDoc, query, where, orderBy} from "firebase/firestore";
 
 import UserCollection from "@/firebase/UserCollection.js";
-import StarCollection from "@/firebase/StarCollection.js";
+//import StarCollection from "@/firebase/StarCollection.js";
 
 import User from "@/components/models/User.js";
 import Cluster from "@/components/models/Clust.js";
@@ -47,7 +47,7 @@ export default class ClusterCollection {
 
      */
     static async deleteCluster(user,cluster ) {
-        const clusterDoc = ClusterCollection.getMealDoc(user, cluster);
+        const clusterDoc = ClusterCollection.getClusterDoc(user, cluster);
         return deleteDoc(clusterDoc);
     }
 
@@ -68,6 +68,7 @@ export default class ClusterCollection {
      */
     static getClusterCollection(user) {
         const userDocRef = UserCollection.getUserDoc(user.id);
+        console.log(userDocRef)
         return collection(userDocRef, ClusterCollection.COLLECTION_NAME);
     }
 
@@ -77,7 +78,7 @@ export default class ClusterCollection {
      * @param {Cluster} cluster
      */
     static getClusterDoc(user, cluster) {
-        const clustersCollection = ClusterCollection.getClusterCollection(user, cluster);
+        const clustersCollection = ClusterCollection.getClusterCollection(user);
         return doc(clustersCollection, cluster.id);
     }
 
@@ -86,7 +87,9 @@ export default class ClusterCollection {
      * @param {Cluster} cluster
      */
     static async addCluster(user, cluster) {
-        const clustersCollection = ClusterCollection.getClusterCollection(user, cluster);
+        const clustersCollection = ClusterCollection.getClusterCollection(user);
+        console.log(clustersCollection)
         return addDoc(clustersCollection, cluster.toFirestore())
     }
+    ///add searh terms
 }

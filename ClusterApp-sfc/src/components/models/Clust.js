@@ -11,7 +11,7 @@ export default class Cluster {
     displayURL = [];
     classifications = [];
     stars = [];
-
+// TODO: add search term array
 
 
     constructor(name,description,isPublic, favorite) {
@@ -41,6 +41,7 @@ export default class Cluster {
     }
     addClassification(classification = new Classification()){
         this.classifications.push(classification);
+
         return this;
     }
 

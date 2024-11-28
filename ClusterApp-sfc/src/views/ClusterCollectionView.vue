@@ -4,6 +4,7 @@ import LSearch from "@/components/LSearch.vue";
 import ClusterList from "@/components/ClusterList.vue";
 import User from "@/components/models/User.js";
 import {db} from "@/firebase/index.js";
+import ClusterCollection from "@/firebase/ClusterCollection.js";
 
 export default {
   name: "ClusterCollection",
@@ -45,8 +46,8 @@ export default {
     </div>
     <div class="row q-col-gutter-lg self-center justify-center">
       <div class="col-8">
-<!--        <cluster-list :list="ClusterList"></cluster-list>-->
-        <!--TODO: ask TYler for help with this-->
+        <cluster-list :list="ClusterList"></cluster-list>
+        <!--TODO ask TYler for help with this-->
       </div>
     </div>
   </q-page-container>

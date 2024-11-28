@@ -1,5 +1,5 @@
 <script >
-
+import {onAuthStateChanged,createUserWithEmailAndPassword, signInWithPopup, signOut} from "firebase/auth";
 import Clust from "@/components/models/Clust.js";
 import Star from "@/components/models/Star.js";
 import Classification from "@/components/models/Classification.js";
@@ -9,6 +9,8 @@ import ClassificationList from "@/components/ClassificationList.vue";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import ClusterList from "@/components/ClusterList.vue";
 import User from '@/components/models/User.js'
+import {auth} from "@/firebase/index.js";
+import UserCollection from "@/firebase/UserCollection.js";
 
  export default{ components: {
      ClusterList,
@@ -212,6 +214,40 @@ import User from '@/components/models/User.js'
 
   },
 
+   created() {
+     // TODO: start session
+
+     onAuthStateChanged(auth , firebaseUser => {
+       if(firebaseUser){
+         console.log('logged in')
+         UserCollection.getUser(firebaseUser.uid)
+             .then(dbUser => {
+               if (dbUser && dbUser.exists()) {
+                 // we have an existing user
+                 return dbUser;
+               } else {
+                 // create new user
+                 const newUser = new User(firebaseUser.displayName, firebaseUser.email, firebaseUser.photoURL, 2000);
+                 newUser.id = firebaseUser.uid;
+
+                 console.log('Creating new user.', newUser);
+                 return UserCollection.setUser(newUser);
+               }
+             })
+             .then(() => {
+               UserCollection.syncUser(firebaseUser.uid, this.authUser);
+             })
+         // .catch(error => Notification.error('Error with login.', {firebaseUser, error}));
+       }else{
+         console.log('logged out')
+         this.authUser = new User();
+       }
+     })
+
+
+
+   },
+
 
 }
 </script>
@@ -223,7 +259,7 @@ import User from '@/components/models/User.js'
     <q-layout view="hHh lpR fFf">
     <l-nav-list :pages="pages" :list="CLusterList"></l-nav-list>
       <q-page-container>
-        <router-view :list="CLusterList" :currentCluster="currentCluster" :currentStar="currentStar" :auth-user="authUser"></router-view>
+        <router-view :auth-user="authUser"></router-view>
 
       </q-page-container>
 

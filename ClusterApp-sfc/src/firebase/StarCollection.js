@@ -1,43 +1,36 @@
-//TODO: Refactor file
 import {collection, doc, getDoc, getDocs, addDoc, deleteDoc, onSnapshot, setDoc, query, where, orderBy} from "firebase/firestore";
+import ClusterCollection from "@/firebase/ClusterCollection.js";
+import Star from "@/components/models/Star.js";
 
-import UserCollection from "@/firebase/UserCollection.js";
-import DayCollection from "@/firebase/DayCollection.js";
-
-import User from "@/models/User.js";
-import Day from "@/models/Day.js";
-import Meal from "@/models/Meal.js";
-
-export default class MealCollection {
-    static COLLECTION_NAME = 'meals';
+export default class StarCollection {
+    static COLLECTION_NAME = 'Stars';
     /**
      * One time call to get an array of meals
      * @param {User} user
-     * @param {Date} date
+     * @param {Cluster} cluster
      * @returns {Promise<*>}
      */
-    static async getMeals(user, date) {
-        const mealsCollection = MealCollection.getMealsCollection(user, date);
-        const docsSnap = await getDocs(mealsCollection.withConverter(Meal));
+    static async getStars(user, cluster) {
+        const starsCollection = StarCollection.getStarsCollection(user, cluster);
+        const docsSnap = await getDocs(starsCollection.withConverter(Star));
         return docsSnap.docs.map(docRef => docRef.data());
     }
 
     /**
      * Sync provided meals array with database collection
      * @param {User} user
-     * @param {Date} date
-     * @param {Meal[]} meals
+     * @param {Cluster} cluster
+     * @param {Star[]} stars
      */
-    static syncMeals(user, date, meals) {
-        const mealsCollection = MealCollection.getMealsCollection(user, date);
-        const mealsQuery = query(
-            mealsCollection,
-            orderBy('time')
-        ).withConverter(Meal);
-        onSnapshot(mealsQuery, snapshot => {
-                meals.splice(0, meals.length);
+    static syncStars(user, cluster, stars) {
+        const starsCollection = StarCollection.getStarsCollection(user, cluster);
+        const starsQuery = query(
+            starsCollection,
+        ).withConverter(Star);
+        onSnapshot(starsQuery, snapshot => {
+                stars.splice(0, stars.length);
                 snapshot.forEach(doc => {
-                    meals.push(doc.data());
+                    stars.push(doc.data());
                 })
             }
         )
@@ -45,54 +38,54 @@ export default class MealCollection {
 
     /**
      * @param {User} user
-     * @param {Date} date
-     * @param {Meal} meal
+     * @param {Cluster} cluster
+     * @param {Star} star
      */
-    static async deleteMeal(user, date, meal) {
-        const mealDoc = MealCollection.getMealDoc(user, date, meal);
-        return deleteDoc(mealDoc);
+    static async deleteStar(user, cluster, star) {
+        const starDoc = StarCollection.getStarDoc(user, cluster, star);
+        return deleteDoc(starDoc);
     }
 
     /**
      *
      * @param {User} user
-     * @param {Date} date
-     * @param {Meal} meal
+     * @param {Cluster} cluster
+     * @param {Star} star
      */
-    static async setMeal(user, date, meal) {
-        const mealDoc = MealCollection.getMealDoc(user, date, meal);
-        return setDoc(mealDoc, meal.toFirestore());
+    static async setStar(user, cluster, star) {
+        const starDoc = StarCollection.getStarDoc(user, cluster, star);
+        return setDoc(starDoc, star.toFirestore());
     }
 
     /**
      *
      * @param {User} user
-     * @param {Date} date
+     * @param {Cluster} cluster
      */
-    static getMealsCollection(user, date) {
-        const dayDocRef = DayCollection.getDayDoc(user, date);
-        return collection(dayDocRef, MealCollection.COLLECTION_NAME);
+    static getStarsCollection(user, cluster) {
+        const clusterDocRef = ClusterCollection.getClusterDoc(user, cluster);
+        return collection(clusterDocRef, StarCollection.COLLECTION_NAME);
     }
 
     /**
      *
      * @param {User} user
-     * @param {Date} date
-     * @param {Meal} meal
+     * @param {Cluster} cluster
+     * @param {Star} Star
      */
-    static getMealDoc(user, date, meal) {
-        const mealsCollection = MealCollection.getMealsCollection(user, date);
-        return doc(mealsCollection, meal.id);
+    static getStarDoc(user, cluster, Star) {
+        const starsCollection = StarCollection.getStarsCollection(user, cluster);
+        return doc(StarCollection, Star.id);
     }
 
     /**
      * @param {User} user
-     * @param {Date} date
-     * @param {Meal} meal
+     * @param {Cluster} cluster
+     * @param {Star} star
      */
-    static async addMeal(user, date, meal) {
-        const mealsCollection = MealCollection.getMealsCollection(user, date);
-        return addDoc(mealsCollection, meal.toFirestore())
+    static async addStar(user, cluster, star) {
+        const starsCollection = StarCollection.getStarsCollection(user, cluster);
+        return addDoc(starsCollection, star.toFirestore())
     }
 }
 
