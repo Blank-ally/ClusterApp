@@ -2,24 +2,70 @@
 
 import Cluster from "@/components/models/Clust.js";
 import StarList from "@/components/StarList.vue";
-import Star from "@/components/models/Star.js";
+import StarItem from "@/components/StarItem.vue";
+import ClusterCollection from "@/firebase/ClusterCollection.js";
+import User from "@/components/models/User.js";
+import StarCollection from "@/firebase/StarCollection.js";
 
 export default {
-  name: "Cluster/:currentCluster",
+  name: "Cluster",
   data: function() {
     return {
       confirm: false,
+      currentCluster: new Cluster(),
+      list:[]
     }},
-
   components: {StarList},
   props: {
-    currentCluster:{
-      type: Cluster,
+    clusterId:{
+      type: String,
       required: true
+    },
+    authUser: {type: User, required: true},
+
+  },
+
+async mounted() {
+
+    this.currentCluster =  await ClusterCollection.getCluster(this.authUser,this.clusterId)
+  this.getSyncList()
+},
+  methods:{
+
+    deleteClassification(){
+      console.log('got here')
+    },
+    goToNewStar(){
+      this.$router.push({name:'NewStar', params:{clusterId:this.clusterId}})
+    },
+    setEditCluster(){
+      console.log(this.clusterId + 'clusterView')
+      this.$router.push({name:'EditCluster', params:{clusterId:this.clusterId}})
+
+    },
+    getSyncList(){
+      if(this.authUser?.id) {
+
+             StarCollection.syncStars(this.authUser, this.currentCluster, this.list)
+                 .catch(error => console.log(error))
+      }
+    },
+    deleteCluster(){
+      ClusterCollection.deleteCluster(this.authUser,this.currentCluster)
+      this.$router.push({name: 'ClusterCollection'})
     }
 
-  }}
+  },
 
+  watch: {
+    authUser: {
+      handler() {
+        this.getSyncList()
+      },
+      deep: true,
+    }
+  }
+}
 </script>
 <template>
 
@@ -35,7 +81,7 @@ export default {
               </q-card-section>
 
               <q-card-actions align="around">
-                <q-btn padding="lg xl" flat click="setEditCluster" class="p-4">
+                <q-btn padding="lg xl" flat @click="setEditCluster" class="p-4">
                   <q-icon left >
                     <i class="fa-solid fa-pen-to-square"></i>
                   </q-icon>
@@ -55,7 +101,7 @@ export default {
       <div class="row q-col-gutter-lg self-center">
         <div class="col-5">
           <div class=" q-pa-lg">
-            <q-btn flat color="primary"  to="/NewStar">
+            <q-btn flat color="primary"  @click="goToNewStar">
               <q-icon left size="1em">
                 <i class="fa-solid fa-circle-plus fa-2x" ></i> </q-icon>
               New Star
@@ -69,7 +115,7 @@ export default {
       </div>
       <div class="row q-col-gutter-lg self-center justify-center">
         <div class="col-8">
-        <star-list :list="currentCluster.Stars"></star-list>
+        <star-list :cluster-id="currentCluster.id" :list="list"></star-list>
         </div>
       </div>
 
@@ -90,7 +136,7 @@ export default {
 
           <q-card-actions align="right">
             <div class="q-gutter-xl">
-              <q-btn flat label="Delete" color="primary" v-close-popup click="deleteCluster(currentCluster)"></q-btn>
+              <q-btn flat label="Delete" color="primary" v-close-popup @click="deleteCluster"></q-btn>
             </div>
             <div class="q-gutter-xl">
               <q-btn flat label="Cancel" color="primary" v-close-popup ></q-btn>

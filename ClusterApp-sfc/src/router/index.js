@@ -5,7 +5,7 @@ import NewClusterView from '../views/NewClusterView.vue'
 import EditClusterView from '../views/EditClusterView.vue'
 import NewStarView from '../views/NewStarView.vue'
 import EditStarView from '../views/EditStarView.vue'
-import ClusterCollectionView from "@/views/ClusterCollectionView.vue";
+import ClusterCollectionView from "@/views/ClusterCollectionsView.vue";
 import ErrorView from "@/views/ErrorView.vue";
 import ProfileView from "@/views/ProfileView.vue";
 import settingsView from "@/views/SettingsView.vue";
@@ -30,7 +30,7 @@ const router = createRouter({
 
     },
     {
-      path: '/Cluster/:currentCluster',
+      path: '/Cluster/:clusterId',
       name: 'Cluster',
       component: ClusterView,
       props:true
@@ -42,19 +42,23 @@ const router = createRouter({
       component: NewClusterView
     },
     {
-      path: '/EditCluster',
+      path: '/EditCluster/:clusterId',
       name: 'EditCluster',
-      component: EditClusterView
+      component: EditClusterView,
+      props:true
     },
     {
-      path: '/NewStar',
+      path: '/Cluster/:clusterId/NewStar',
       name: 'NewStar',
-      component: NewStarView
+      component: NewStarView,
+      props:true
     },
     {
-      path: '/EditStar',
+      path: '/Cluster/:clusterId/star/:starId/EditStar',
       name: 'EditStar',
-      component: EditStarView
+      component: EditStarView,
+      props:true
+
     },
     {
       path: '/Error',
@@ -62,9 +66,11 @@ const router = createRouter({
       component: ErrorView,
     },
     {
-      path: '/Profile',
+      path: '/Profile/user/:userId',
       name: 'Profile',
       component: ProfileView,
+      props:true
+
     },
     {
       path: '/Settings',

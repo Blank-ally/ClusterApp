@@ -1,6 +1,7 @@
-import {collection, doc, getDoc, getDocs, addDoc, deleteDoc, onSnapshot, setDoc, query, where, orderBy} from "firebase/firestore";
+import {collection, doc, getDoc, getDocs, addDoc, deleteDoc, onSnapshot, setDoc, query, where, orderBy,starStorage } from "firebase/firestore";
 import ClusterCollection from "@/firebase/ClusterCollection.js";
 import Star from "@/components/models/Star.js";
+import {ref, uploadBytes, getDownloadURL} from "firebase/storage";
 
 export default class StarCollection {
     static COLLECTION_NAME = 'Stars';
@@ -86,6 +87,73 @@ export default class StarCollection {
     static async addStar(user, cluster, star) {
         const starsCollection = StarCollection.getStarsCollection(user, cluster);
         return addDoc(starsCollection, star.toFirestore())
+            .then((docRef) =>
+                this.addImage(docRef.id)
+
+            );
     }
+    /**
+     *
+     * @param {String} StarId
+     * @param {Star} star
+     */
+    static  addImage(StarId,star) {
+    // docId and image file are required
+    if (!star.id || !star.photoURL) {
+        return false;
+    }
+ debugger
+    // create a filename we know will be unique
+    // the other option would be to create a folder for each recipe
+    //let theRecipe = this.newRecipe;
+    let allowedTypes = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+    let extension = star.photoURL.name.toLowerCase().split('.').pop() ///check this
+
+    // validate extension
+    if (allowedTypes.indexOf(extension) < 0) {
+        // invalid extension
+
+        // let the user know...
+        // TODO: let the user know WITHOUT alerts
+        alert('Invalid file type.');
+
+        return false;
+    }
+// todo: maybe remove size limit
+    // validate size (less than 200KB
+    if (star.photoURL.size > (200 * 1024)) {
+        // file too large
+
+        // let the user know...
+        // TODO: let the user know WITHOUT alerts
+        alert('File too large. 200KB max');
+
+        return false;
+    }
+
+    // TODO: add image to firebase
+    const starImage = ref(starStorage, Star.id);
+    uploadBytes(starImage, star.photoURL)
+        .then(snapshot => {
+            // clear the form
+          //  this.newRecipe.image = null;
+
+            // get the URL to the image we just uploaded
+            return getDownloadURL(snapshot.ref);
+        })
+        .then(url => {
+            // update the recipe
+
+            const starDoc = StarCollection.getStarDoc(user, cluster, star);
+            return updateDoc(recipeDoc, {image: url});
+        })
+        .then(docRef => {
+            console.log("recipe updated with image");
+        })
+        .catch(error => {
+            console.error('error uploading image', error);
+        })
 }
+}
+
 

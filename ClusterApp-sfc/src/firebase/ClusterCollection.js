@@ -1,4 +1,4 @@
-import {collection, doc, getDoc, getDocs, addDoc, deleteDoc, onSnapshot, setDoc, query, where, orderBy} from "firebase/firestore";
+import {collection, doc, getDoc, getDocs, addDoc, deleteDoc, onSnapshot, setDoc, query, where, orderBy,updateDoc} from "firebase/firestore";
 
 import UserCollection from "@/firebase/UserCollection.js";
 //import StarCollection from "@/firebase/StarCollection.js";
@@ -11,7 +11,7 @@ export default class ClusterCollection {
     static COLLECTION_NAME = 'Clusters';
 
     /**
-     * One time call to get an array of meals
+     * One time call to get an array of Clusters
      * @param {User} user
      * @returns {Promise<*>}
      */
@@ -22,7 +22,7 @@ export default class ClusterCollection {
     }
 
     /**
-     * Sync provided meals array with database collection
+     * Sync provided Clusters array with database collection
      * @param {User} user
      * @param {Cluster[]} clusters
      */
@@ -31,7 +31,6 @@ export default class ClusterCollection {
         const ClustersQuery = query(
             clusterCollection
         ).withConverter(Cluster);
-        //ToDO:Ask tyler  about the snap shot
         onSnapshot(ClustersQuery, snapshot => {
             clusters.splice(0, clusters.length);
                 snapshot.forEach(doc => {
@@ -49,6 +48,16 @@ export default class ClusterCollection {
     static async deleteCluster(user,cluster ) {
         const clusterDoc = ClusterCollection.getClusterDoc(user, cluster);
         return deleteDoc(clusterDoc);
+    }
+
+    /**
+     * @param {User} user
+     * @param {Cluster} cluster
+
+     */
+    static async updateCluster(user,cluster ) {
+        const clusterDoc = ClusterCollection.getClusterDoc(user, cluster);
+        return updateDoc(clusterDoc,cluster.toFirestore());
     }
 
     /**
@@ -81,6 +90,32 @@ export default class ClusterCollection {
         const clustersCollection = ClusterCollection.getClusterCollection(user);
         return doc(clustersCollection, cluster.id);
     }
+    /**
+     *
+     * @param {User} user
+     * @param {String} clusterId
+     */
+  static async getCluster(user, clusterId){
+      console.log(clusterId)
+        const ClusterRef = ClusterCollection.getClusterDocById(user,clusterId )
+        console.log(` user ${user} , cLusterId  ${clusterId}, refs ${ClusterRef}`)
+        const docSnap = await getDoc(ClusterRef.withConverter(Cluster));
+        return docSnap.data();
+
+    }
+/**
+ *
+ * @param {User} user
+ * @param {String} clusterId
+ */
+
+static  getClusterDocById(user, clusterId)
+{  console.log(user,clusterId)
+          const clustersCollection = ClusterCollection.getClusterCollection(user);
+
+          return doc(clustersCollection, clusterId);
+}
+
 
     /**
      * @param {User} user
@@ -91,5 +126,25 @@ export default class ClusterCollection {
         console.log(clustersCollection)
         return addDoc(clustersCollection, cluster.toFirestore())
     }
-    ///add searh terms
+    ///add search terms
+    /**
+     * @param {User} user
+     * @param {String} searchTerm
+     * @param {Cluster[]} clusters
+     */
+    static searchCluster(user,searchTerm,clusters){
+        const clusterCollection = ClusterCollection.getClusterCollection(user);
+        debugger
+        const  clusterQuery = (searchTerm == "" ) ? ClusterCollection.syncClusters(user,clusters) : query(clusterCollection,
+             where('searchTerms', 'array-contains',searchTerm)
+        ).withConverter(Cluster);
+        clusters.splice(0, clusters.length);
+        onSnapshot(clusterQuery, snapshot => {
+            snapshot.forEach(doc => {
+                clusters.push(doc.data());
+
+            })
+        })
+
+    }
 }

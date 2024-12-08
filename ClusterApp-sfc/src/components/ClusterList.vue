@@ -1,8 +1,8 @@
 <script>
-import clust from "@/components/models/Clust.js";
+import ClusterCollection from "@/firebase/ClusterCollection.js";
 import LSearch from "@/components/LSearch.vue";
 import ClusterItem from "@/components/ClusterItem.vue";
-import Clust from "@/components/models/Clust.js";
+import User from "@/components/models/User.js";
 //TODO:Get list from  database
 export default {
   name: "ClusterList",
@@ -16,13 +16,14 @@ export default {
 
   // props:   Data passed into the component via attributes.
   //          Props can be optional or required. Objects and arrays
-  //          are pass-by-reference. Primitives (number, string, boolean)
+  //          are pass-by-reference. Primitis (number, string, boolean)
   //          are pass-by-value.
   props: {
     list:{
       type: Array,
       required: true
-    }
+    },
+    authUser: {type: User, required: true},
 
   },
 
@@ -30,15 +31,9 @@ export default {
   methods: {
     search(keyword){
       console.log('search: ', keyword);
-      this.filterKeyword = keyword;
-    },
-    sort(property){
-      this.sortProperty = property;
-    },
-    print(){
-      console.log(this.list)
-    },
+      ClusterCollection.searchCluster(this.authUser,keyword,this.list)
 
+    },
 
   },
 
@@ -47,14 +42,11 @@ export default {
   //              Treat these like regular values that you would use
   //              in data or props.
   computed: {
-    filteredlist(){
-      console.log("This is running")
-        return this.list.filter(Clust => {
-        return Clust.name.toLowerCase().includes(this.filterKeyword.toLowerCase())
 
-     })
 
-    }
+
+
+
 
   }
 }
@@ -67,8 +59,8 @@ export default {
 <!--      TODO: change to request to  database -->
     </div>
     <div class="row q-col-gutter-md">
-      <div class="col-lg-4 col-sm-6" v-for="cluster in filteredlist">
-     <cluster-item :cluster="cluster"></cluster-item>
+      <div class="col-lg-4 col-sm-6" v-for="cluster in list">
+     <cluster-item :cluster="cluster" auth-user="authUser"></cluster-item>
       </div>
     </div>
   </div>

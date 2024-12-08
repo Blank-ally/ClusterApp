@@ -11,6 +11,8 @@ export default class Cluster {
     displayURL = [];
     classifications = [];
     stars = [];
+    searchTerms = [];
+
 // TODO: add search term array
 
 
@@ -52,15 +54,16 @@ export default class Cluster {
         let isPublic = this.isPublic; 
         let favorite = this.favorite; 
         let creationDate =  this.creationDate;
+        let searchTerms = this.name.split(" ")
         
 
-        return {name, description, isPublic, favorite, creationDate};
+        return {name, description, isPublic, favorite, creationDate,searchTerms};
     }
 
     static fromFirestore(snapshot, options) {
         const data = snapshot.data(options);
 
-        const cluster = new Cluster (data.name, data.description, data.isPublic, data.favorite, data.creationDate);
+        const cluster = new Cluster (data.name, data.description, data.isPublic, data.favorite, data.creationDate,data.searchTerms);
         cluster.id = snapshot.id || 0;
 
         return cluster;

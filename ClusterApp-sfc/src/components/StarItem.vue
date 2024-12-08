@@ -1,5 +1,6 @@
 <script>
 import router from "@/router/index.js";
+import Star from "@/components/models/Star.js";
 
 export default {
   name: "StarItem",
@@ -12,17 +13,22 @@ export default {
   props: {
 
     star:{
-      type: Object,
+      type: Star,
       required: true
+    },
+    clusterId: {
+      type: String,
+      required: true,
     }
   },
   methods: {
     SetCurrentStar(){
-      debugger
 
       this.currentStar = this.star;
       this.editStar = this.currentStar
-      window.location.href = router() //TODO: figure out page routing
+
+      this.$router.push({name:"EditStar", params:{clusterId:this.clusterId,starId: this.star.id}})
+//TODO: figure out page routing
     },
 
 
@@ -61,7 +67,7 @@ export default {
 
 <template>
   <q-card class="my-card cursor-pointer" @click="SetCurrentStar()">
-    <img :src="star.photo">
+    <img :src="star.photoURL">
 
     <q-card-section>
       <div class="text-h6">

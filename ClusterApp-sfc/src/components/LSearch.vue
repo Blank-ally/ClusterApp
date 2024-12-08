@@ -12,7 +12,6 @@ export default {
   },
   methods: {
     search(){
-      //this.$emit('search', this.keyword)
       this.onSearch(this.keyword);
     }
   },

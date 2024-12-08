@@ -57,7 +57,8 @@ export default {
     },
     SignInWithUsers(email, password){
       signInWithEmailAndPassword(auth, email, password)
-          .then(() => console.log("LOGGED IN "))
+          .then(() => console.log("Logged in idk why theres two "))
+          .then(() => router.push({name: 'ClusterCollection'}))
           .catch(function(error) {
             let errorCode = error.code;
             let errorMessage = error.message;

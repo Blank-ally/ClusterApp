@@ -27,7 +27,7 @@
         <q-form
             @submit="editCurrentStar"
             @reset="onReset"
-            class="q-gutter-xl"
+            class="q-gutter-xl form-background"
         >
 
           <div class="q-pa-md">

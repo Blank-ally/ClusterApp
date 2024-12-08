@@ -35,7 +35,7 @@ export default {
 <template>
   <q-list class="bg-grey-11" bordered separator >
     <q-item-label header>Classifications</q-item-label>
-    <classification-item @delclas="clas => deleteClassi(clas)" :clas="clas"  clickable v-for="clas in list"></classification-item>
+    <classification-item  @delete-classification="clas => $emit('delete-classification',clas)"  clickable v-for="clas in list" :clas="clas"></classification-item>
   </q-list>
 </template>
 

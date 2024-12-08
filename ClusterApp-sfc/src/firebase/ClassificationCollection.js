@@ -1,6 +1,6 @@
 //TODO: refactor file
 
-import {collection, doc, getDoc, getDocs, addDoc, deleteDoc, onSnapshot, setDoc, query, where, orderBy} from "firebase/firestore";
+import {collection, doc, getDoc, getDocs, addDoc, deleteDoc, onSnapshot, setDoc, query, where, orderBy,updateDoc} from "firebase/firestore";
 import ClusterCollection from "@/firebase/ClusterCollection.js";
 import Classification from "@/components/models/Classification.js";
 
@@ -28,7 +28,6 @@ export default class ClassificationCollection {
         const classificationsCollection = ClassificationCollection.getClassificationCollection(user, cluster);
         const ClassificationsQuery = query(
             classificationsCollection,
-            orderBy('time')
         ).withConverter(Classification);
         onSnapshot(ClassificationsQuery, snapshot => {
             classifications.splice(0, classifications.length);
@@ -48,7 +47,15 @@ export default class ClassificationCollection {
         const classificationDoc = ClassificationCollection.getClassificationDoc(user, cluster, classification);
         return deleteDoc(classificationDoc);
     }
-
+    /**
+     * @param {User} user
+     * @param {Cluster} cluster
+     * @param {Classification} classification
+     */
+    static async updateClassification(user, cluster, classification) {
+        const classificationDoc = ClassificationCollection.getClassificationDoc(user, cluster, classification);
+        return updateDoc(classificationDoc,classification.toFirestore());
+    }
     /**
      *
      * @param {User} user

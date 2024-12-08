@@ -259,7 +259,7 @@ import UserCollection from "@/firebase/UserCollection.js";
     <q-layout view="hHh lpR fFf">
     <l-nav-list :pages="pages" :list="CLusterList"></l-nav-list>
       <q-page-container>
-        <router-view :auth-user="authUser"></router-view>
+        <router-view :key="authUser.id" :auth-user="authUser"></router-view>
 
       </q-page-container>
 
@@ -270,6 +270,11 @@ import UserCollection from "@/firebase/UserCollection.js";
 </template>
 
 <style scoped>
-
+body{
+  background-image: url("assets/pexels-daniel-cid-634838605-17809424.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: #BF877A;
+}
 </style>
 

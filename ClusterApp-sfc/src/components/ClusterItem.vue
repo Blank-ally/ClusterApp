@@ -1,16 +1,14 @@
 <script>
 
-
-
-
-import Clust from "@/components/models/Clust.js";
+import User from "@/components/models/User.js";
+import Cluster from "@/components/models/Clust.js";
 
 export default {
   name: "ClusterItem",
   data: function(){
     return {
 
-      currentCluster:{...this.cluster,stars:[...this.cluster.Stars]}
+
     }
   },
 
@@ -20,9 +18,10 @@ export default {
   //          are pass-by-value.
   props: {
     cluster:{
-      type: Clust,
+      type: Cluster,
       required: true
-    }
+    },
+    authUser: {type: User, required: true},
 
   },
 
@@ -31,11 +30,9 @@ export default {
 
     SetCurrentCluster() {
 debugger;
-      this.currentCluster = this.cluster;
-      console.log(this.currentCluster)
-      //this.$router.push('/cluster')
-     this.$router.push({ path: '/cluster/:currentCluster', params: this.cluster})
-    //  window.location.href = 'Cluster.html'
+console.log(this.cluster.id)
+this.$router.push({name:'Cluster', params:{clusterId:this.cluster.id}})
+
 
     },
 
@@ -58,17 +55,6 @@ debugger;
     }
   },
 
-  // watch:   calls the function if the value changes
-  // https://travishorn.com/add-localstorage-to-your-vue-app-in-2-lines-of-code-56eb2c9f371b
-/*  watch: {
-    currentCluster:{
-      //this.shoppingList // = old list before the list is updated
-      handler(){
-        localStorage.setItem('currentCluster',JSON.stringify(this.currentCluster))
-      },
-      deep: true,
-    }
-  }*/
 }
 </script>
 

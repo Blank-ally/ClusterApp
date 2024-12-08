@@ -1,4 +1,7 @@
 <script>
+import Classification from "@/components/models/Classification.js";
+import ClassificationCollection from "@/firebase/ClassificationCollection.js";
+
 export default {
   name: "ClassificationItem",
   data: function(){
@@ -11,7 +14,7 @@ export default {
   //          are pass-by-value.
   props: {
     clas:{
-      type: Object,
+      type: Classification,
       required: true
     }
 
@@ -40,7 +43,7 @@ export default {
 
         <q-item-section top side>
                             <div class="text-grey-8 q-gutter-xs">
-                                <q-btn class="gt-xs" size="12px" flat dense round icon="delete" @click="$emit('delclas',clas)"></q-btn>
+                                <q-btn class="gt-xs" size="12px" flat dense round icon="delete" @click="$emit('delete-classification',clas)"></q-btn>
                                 <q-btn class="gt-xs" size="12px" flat dense round icon="fa-solid fa-pen-to-square"></q-btn>
 
                             </div>

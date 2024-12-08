@@ -1,6 +1,10 @@
 <script>
+import StarItem from "@/components/StarItem.vue";
+
 export default {
-  name: "StarList", data: function(){
+  name: "StarList",
+  components: {StarItem},
+  data: function(){
     return {}
   },
 
@@ -13,6 +17,10 @@ export default {
       type: Array,
       required: true
     },
+    clusterId:{
+      type:String,
+      required: true,
+    }
   },
 
   // methods: Usually "events" triggered by v-on:
@@ -35,7 +43,7 @@ export default {
 <template>
   <div class="row q-col-gutter-md">
     <div class="col-lg-3 col-sm-6" v-for="item in list">
-      <star-item :star="item"></star-item>
+      <star-item :cluster-id="clusterId" :star="item"></star-item>
     </div>
   </div>
 </template>
