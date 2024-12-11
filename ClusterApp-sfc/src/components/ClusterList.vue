@@ -31,8 +31,8 @@ export default {
   methods: {
     search(keyword){
       console.log('search: ', keyword);
-      ClusterCollection.searchCluster(this.authUser,keyword,this.list)
-
+      ClusterCollection.searchCluster(this.authUser,keyword.toLowerCase(),this.list)
+          .catch(error => console.log(error))
     },
 
   },
@@ -55,12 +55,12 @@ export default {
 <template>
   <div>
     <div class="col-6 col-md-4">
-    <l-search :onSearch="search"></l-search>
+    <l-search :auth-user="authUser" :onSearch="search"></l-search>
 <!--      TODO: change to request to  database -->
     </div>
     <div class="row q-col-gutter-md">
       <div class="col-lg-4 col-sm-6" v-for="cluster in list">
-     <cluster-item :cluster="cluster" auth-user="authUser"></cluster-item>
+     <cluster-item :cluster="cluster" :auth-user=authUser></cluster-item>
       </div>
     </div>
   </div>

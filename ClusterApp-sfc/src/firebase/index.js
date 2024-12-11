@@ -3,7 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from 'firebase/firestore';
 import { getStorage, ref } from "firebase/storage";
 import { getAuth, GoogleAuthProvider } from 'firebase/auth';
-// TODO: Add SDKs for Firebase products that you want to use
+
 
 const firebaseConfig = {
     apiKey: "AIzaSyCVvD_jwZDgNrNmnf_shdfcBnBFvOEgPNM",
@@ -15,7 +15,7 @@ const firebaseConfig = {
 };
 
 
-let app, db, auth, authProvider,storage,starStorage;
+let app, db, auth, authProvider,storage,starStorage, userStorage;
 try {
     app = initializeApp(firebaseConfig);
     db = getFirestore(app);
@@ -23,9 +23,10 @@ try {
     authProvider = new GoogleAuthProvider();
     storage = getStorage(app);
      starStorage = ref(storage, 'stars');
+     userStorage =  ref(storage,'UserBg')
 }catch(error){
     // do as set timeout because Quasar's Notify is not registered yet.
  //   setTimeout(() => Notification.error('Could not connect to database.', error), 1000);
 }
 
-export {db, auth, authProvider,starStorage};
+export {db, auth, authProvider,starStorage,userStorage};

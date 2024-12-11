@@ -6,6 +6,7 @@ import StarItem from "@/components/StarItem.vue";
 import ClusterCollection from "@/firebase/ClusterCollection.js";
 import User from "@/components/models/User.js";
 import StarCollection from "@/firebase/StarCollection.js";
+import HomeView from "@/views/HomeView.vue";
 
 export default {
   name: "Cluster",
@@ -15,7 +16,7 @@ export default {
       currentCluster: new Cluster(),
       list:[]
     }},
-  components: {StarList},
+  components: {StarList,HomeView},
   props: {
     clusterId:{
       type: String,
@@ -52,7 +53,10 @@ async mounted() {
     },
     deleteCluster(){
       ClusterCollection.deleteCluster(this.authUser,this.currentCluster)
-      this.$router.push({name: 'ClusterCollection'})
+          .then(() => this.$router.push({name: 'ClusterCollection'}))
+          .catch(error => console.log(error))
+
+
     }
 
   },
@@ -68,11 +72,12 @@ async mounted() {
 }
 </script>
 <template>
+  <q-page  v-if="authUser?.exists()">
 
     <q-page-container>
 
       <div class="row justify-center ">
-        <div class="col-6  justify-center text-h3">
+        <div class="col-md-6  justify-center text-h3">
           <div class="q-pa-xl">
             <q-card class="header-card text-center">
               <q-card-section>
@@ -99,9 +104,14 @@ async mounted() {
 
 
       <div class="row q-col-gutter-lg self-center">
-        <div class="col-5">
+        <div class="col-12">
           <div class=" q-pa-lg">
-            <q-btn flat color="primary"  @click="goToNewStar">
+            <q-btn  flat  v-if="authUser.siteColor" :style="{color: authUser.siteColor}"   @click="goToNewStar">
+              <q-icon left size="1em">
+                <i class="fa-solid fa-circle-plus fa-2x" ></i> </q-icon>
+              New Star
+            </q-btn>
+            <q-btn  v-else flat color="primary" @click="goToNewStar">
               <q-icon left size="1em">
                 <i class="fa-solid fa-circle-plus fa-2x" ></i> </q-icon>
               New Star
@@ -146,8 +156,8 @@ async mounted() {
       </q-dialog>
 
     </q-page-container>
-
-
+  </q-page>
+  <home-view v-else :auth-user="authUser"/>
 
 </template>
 

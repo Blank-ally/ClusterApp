@@ -54,7 +54,8 @@ export default class Cluster {
         let isPublic = this.isPublic; 
         let favorite = this.favorite; 
         let creationDate =  this.creationDate;
-        let searchTerms = this.name.split(" ")
+        let searchTerms = this.name.toLowerCase().split(" ")
+        searchTerms.push(name)
         
 
         return {name, description, isPublic, favorite, creationDate,searchTerms};

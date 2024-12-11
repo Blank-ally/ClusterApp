@@ -65,13 +65,13 @@ const router = createRouter({
       name: 'Error',
       component: ErrorView,
     },
-    {
-      path: '/Profile/user/:userId',
+/*    {
+      path: '/Profile',
       name: 'Profile',
       component: ProfileView,
       props:true
 
-    },
+    },*/
     {
       path: '/Settings',
       name: 'Settings',

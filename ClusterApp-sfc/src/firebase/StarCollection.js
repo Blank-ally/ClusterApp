@@ -1,7 +1,24 @@
-import {collection, doc, getDoc, getDocs, addDoc, deleteDoc, onSnapshot, setDoc, query, where, orderBy,starStorage } from "firebase/firestore";
+import {
+    collection,
+    doc,
+    getDoc,
+    getDocs,
+    addDoc,
+    deleteDoc,
+    onSnapshot,
+    setDoc,
+    query,
+    where,
+    orderBy,
+    updateDoc,
+    limit
+} from "firebase/firestore";
 import ClusterCollection from "@/firebase/ClusterCollection.js";
 import Star from "@/components/models/Star.js";
 import {ref, uploadBytes, getDownloadURL} from "firebase/storage";
+import {starStorage} from "@/firebase";
+import Cluster from "@/components/models/Clust.js";
+import {errorOut} from "firebase-tools/lib/errorOut.js";
 
 export default class StarCollection {
     static COLLECTION_NAME = 'Stars';
@@ -18,7 +35,6 @@ export default class StarCollection {
     }
 
     /**
-     * Sync provided meals array with database collection
      * @param {User} user
      * @param {Cluster} cluster
      * @param {Star[]} stars
@@ -31,6 +47,27 @@ export default class StarCollection {
         onSnapshot(starsQuery, snapshot => {
                 stars.splice(0, stars.length);
                 snapshot.forEach(doc => {
+                    stars.push(doc.data());
+                })
+            }
+        )
+    }
+    /**
+     * @param {User} user
+     * @param {Cluster} cluster
+     * @param {Star[]} stars
+     */
+    static syncStarsWithImages(user, cluster, stars) {
+        const starsCollection = StarCollection.getStarsCollection(user, cluster);
+        const starsQuery = query(
+            starsCollection,
+            where('photoURL', '!=', '""'),
+            limit(4)
+        ).withConverter(Star);
+        onSnapshot(starsQuery, snapshot => {
+                stars.splice(0, stars.length);
+                snapshot.forEach(doc => {
+                    console.log(doc.data())
                     stars.push(doc.data());
                 })
             }
@@ -53,6 +90,26 @@ export default class StarCollection {
      * @param {Cluster} cluster
      * @param {Star} star
      */
+
+    static async updateStar(user, cluster, star) {
+
+        if (star.photoURL && star.photoURL[0].endsWith('.jpg') ||star.photoURL[0].endsWith('.jpeg') || star.photoURL[0].endsWith('.png')|| star.photoURL[0].endsWith('.gif') || star.photoURL[0].endsWith('.webp')) {
+            StarCollection.addImage(user,cluster,star)
+        }
+
+        const starDoc = StarCollection.getStarDoc(user, cluster, star);
+        return updateDoc(starDoc, star.toFirestore())
+            .catch(error => console.log(error))
+            ;
+    }
+
+    /**
+     *
+     * @param {User} user
+     * @param {Cluster} cluster
+     * @param {Star} star
+     */
+
     static async setStar(user, cluster, star) {
         const starDoc = StarCollection.getStarDoc(user, cluster, star);
         return setDoc(starDoc, star.toFirestore());
@@ -76,7 +133,7 @@ export default class StarCollection {
      */
     static getStarDoc(user, cluster, Star) {
         const starsCollection = StarCollection.getStarsCollection(user, cluster);
-        return doc(StarCollection, Star.id);
+        return doc(starsCollection, Star.id);
     }
 
     /**
@@ -85,29 +142,37 @@ export default class StarCollection {
      * @param {Star} star
      */
     static async addStar(user, cluster, star) {
+         const starImg = star.photoURL
+        star.photoURL = ''
         const starsCollection = StarCollection.getStarsCollection(user, cluster);
         return addDoc(starsCollection, star.toFirestore())
-            .then((docRef) =>
-                this.addImage(docRef.id)
+            .then((docRef) =>{
+                star.id = docRef.id
+                star.photoURL = starImg
+                StarCollection.addImage(user,cluster,star)}
 
             );
+
     }
     /**
-     *
-     * @param {String} StarId
-     * @param {Star} star
+     *@param {User} user
+     *@param {Cluster} cluster
+     *@param {Star} star
      */
-    static  addImage(StarId,star) {
+    static  addImage(user,cluster,star) {
     // docId and image file are required
+        debugger
     if (!star.id || !star.photoURL) {
         return false;
     }
+
  debugger
     // create a filename we know will be unique
     // the other option would be to create a folder for each recipe
     //let theRecipe = this.newRecipe;
-    let allowedTypes = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
-    let extension = star.photoURL.name.toLowerCase().split('.').pop() ///check this
+    let allowedTypes = ['jpg', 'jpeg', 'png', 'gif', 'webp']
+    console.log(star.photoURL[0].name)
+    let extension = star.photoURL[0].name.toLowerCase().split('.').pop() ///check this
 
     // validate extension
     if (allowedTypes.indexOf(extension) < 0) {
@@ -121,7 +186,7 @@ export default class StarCollection {
     }
 // todo: maybe remove size limit
     // validate size (less than 200KB
-    if (star.photoURL.size > (200 * 1024)) {
+/*    if (star.photoURL[0].size > (200 * 1024)) {
         // file too large
 
         // let the user know...
@@ -129,11 +194,11 @@ export default class StarCollection {
         alert('File too large. 200KB max');
 
         return false;
-    }
+    }*/
 
     // TODO: add image to firebase
-    const starImage = ref(starStorage, Star.id);
-    uploadBytes(starImage, star.photoURL)
+    const starImage = ref(starStorage, star.id);
+    uploadBytes(starImage, star.photoURL[0])
         .then(snapshot => {
             // clear the form
           //  this.newRecipe.image = null;
@@ -143,17 +208,38 @@ export default class StarCollection {
         })
         .then(url => {
             // update the recipe
-
             const starDoc = StarCollection.getStarDoc(user, cluster, star);
-            return updateDoc(recipeDoc, {image: url});
+            return updateDoc(starDoc, {photoURL: url});
         })
         .then(docRef => {
-            console.log("recipe updated with image");
+            console.log("star updated with image");
         })
         .catch(error => {
             console.error('error uploading image', error);
         })
 }
+    /**
+     *@param {User} user
+     *@param {Cluster} cluster
+     *@param {String} starId
+     */
+static async getStar(user,cluster,starId ) {
+        const starRef = StarCollection.getStarDocById(user,cluster,starId)
+        const docSnap = await getDoc(starRef.withConverter(Star));
+        return docSnap.data();
+
+    }
+
+    /**
+*@param {User} user
+*@param {Cluster} cluster
+*@param {String} starId
+*/
+static getStarDocById(user,cluster,starId ){
+        const starsCollection = StarCollection.getStarsCollection(user, cluster);
+        return doc(starsCollection, starId);
+    }
+
 }
 
 

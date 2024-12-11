@@ -112,7 +112,6 @@ export default class ClusterCollection {
 static  getClusterDocById(user, clusterId)
 {  console.log(user,clusterId)
           const clustersCollection = ClusterCollection.getClusterCollection(user);
-
           return doc(clustersCollection, clusterId);
 }
 

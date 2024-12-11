@@ -24,7 +24,7 @@ export default class Star {
         let qty = this.qty;
         let notes = this.notes;
 
-        return {name, photoURL, cluster, classification, qty, notes};
+        return {name, photoURL,cluster, classification, qty, notes}; //
     }
 
     static fromFirestore(snapshot, options) {

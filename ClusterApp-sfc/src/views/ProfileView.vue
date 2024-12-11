@@ -1,11 +1,46 @@
-<script setup>
+<script>
+import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
+import User from "@/components/models/User.js";
+import HomeView from "@/views/HomeView.vue";
+
+export default {
+  name: "Profile",
+  components: {FontAwesomeIcon,HomeView},
+
+  data: function(){
+    return {
+      slide:true,
+    }
+  },
+
+
+  props: {
+
+    authUser: {type: User, required: true},
+  },
+
+  // methods: Usually "events" triggered by v-on:
+  methods: {
+
+  },
+
+  computed: {
+
+
+  },
+  mounted() {
+    debugger
+    if(!this.authUser?.id){
+      router.push('/')
+    }
+  }
+}
 
 </script>
 
 <template >
-
-
-    <div class="q-pa-md">
+  <q-page  v-if="authUser?.exists()">
+  <div class="q-pa-md">
       <q-carousel
           arrows
           animated
@@ -34,8 +69,8 @@
     </div>
 
   <q-separator />
-
-
+  </q-page>
+  <home-view v-else :auth-user="authUser"/>
 
 </template>
 

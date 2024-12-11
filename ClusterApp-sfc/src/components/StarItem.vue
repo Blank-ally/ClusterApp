@@ -28,7 +28,7 @@ export default {
       this.editStar = this.currentStar
 
       this.$router.push({name:"EditStar", params:{clusterId:this.clusterId,starId: this.star.id}})
-//TODO: figure out page routing
+
     },
 
 
@@ -66,8 +66,8 @@ export default {
 </script>
 
 <template>
-  <q-card class="my-card cursor-pointer" @click="SetCurrentStar()">
-    <img :src="star.photoURL">
+  <q-card class="card  cursor-pointer" @click="SetCurrentStar()">
+    <img :src="star.photoURL" style="max-width: 250px; max-height: 150px; width: 100%; height: 100%">
 
     <q-card-section>
       <div class="text-h6">
@@ -80,5 +80,9 @@ export default {
 </template>
 
 <style scoped>
-
+.card{
+  max-height: 200px;
+  max-width: 200px;
+  overflow:hidden;
+}
 </style>

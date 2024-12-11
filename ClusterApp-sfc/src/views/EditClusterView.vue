@@ -5,6 +5,7 @@ import ClusterCollection from "@/firebase/ClusterCollection.js";
 import ClassificationCollection from "@/firebase/ClassificationCollection.js";
 import Classification from "@/components/models/Classification.js";
 import ClassificationList from "@/components/ClassificationList.vue";
+import HomeView from "@/views/HomeView.vue";
 
 
 export default {
@@ -17,7 +18,7 @@ export default {
       list: [],
     }
   },
-  components: { ClassificationList},
+  components: { ClassificationList,HomeView},
   props: {
     clusterId: {
       type: String,
@@ -37,11 +38,15 @@ export default {
   },
   methods: {
 
-    deleteClassification() {
-      console.log('got here')
+    deleteClassification(clas) {
+      console.log(clas)
+      ClassificationCollection.deleteClassification(this.authUser,this.editCluster,clas)
+          .catch(error => console.log(error))
+
     },
-    editClassification() {
-      console.log('got here edit')
+    editClassification(clas) {
+      ClassificationCollection.updateClassification(this.authUser, this.editCluster, clas)
+      .catch(error => console.log(error));
     },
 
     Cancel() {
@@ -66,7 +71,10 @@ export default {
 
   },
     AddNewClassification(classification ){
-      ClassificationCollection.addClassification(this.authUser,this.editCluster,classification).then(() => this.classification = new Classification())
+      if(this.classification.name.trim() !== ""){
+        debugger
+      ClassificationCollection.addClassification(this.authUser,this.editCluster,this.classification).then(() => this.classification = new Classification())
+      }
     },
 
   watch: {
@@ -85,19 +93,23 @@ export default {
 </script>
 
 <template>
-
+  <q-page  v-if="authUser?.exists()">
 
   <q-page-container>
 
 
     <div class="row justify-center ">
-      <div class="col-6 text-center text-h3 q-pa-lg">
+      <div v-if="authUser.textColor" :style="{color: authUser.textColor}" class="col-6 text-center text-h3 q-pa-lg">
+        Edit Cluster
+      </div>
+
+      <div  v-else style="color:#1976D2 " class="col-6 text-center text-h3 q-pa-lg">
         Edit Cluster
       </div>
     </div>
 
-    <div class="q-pa-xl row justify-center">
-      <div class="col-6">
+    <div class="q-pa-xl row justify-center ">
+      <div class="col-md-6 col-12 ">
         <q-form
             @submit.prevent="editCurrentCluster"
             class="q-gutter-md form-background"
@@ -118,23 +130,25 @@ export default {
                    v-model="classification.name"
                    lazy-rules
                    bg-color="white">
-            <q-btn round dense flat icon="add" @click="AddNewClassification(classification)"></q-btn>
+            <q-btn round dense flat v-if="authUser.siteColor" :style="{color: authUser.siteColor}"  label="Add" @click="AddNewClassification"></q-btn>
+            <q-btn round dense flat v-else  label="Add" @click="AddNewClassification"></q-btn>
           </q-input>
 
 
-          <classification-list @delete-classification="clas => deleteClassification()"
+          <classification-list @edit-classification="clas => editClassification(clas)" @delete-classification="clas => deleteClassification(clas)"
                                :list="list"></classification-list>
           <!-- needs to be pulled from database -->
 
-
+<!--
           <q-toggle v-model="editCluster.isPublic" label="Public"></q-toggle>
           <br>
-          <q-toggle v-model="editCluster.favorite" label="Favorite"></q-toggle>
+          <q-toggle v-model="editCluster.favorite" label="Favorite"></q-toggle>-->
 
 
           <div class="flex justify-end">
-            <q-btn label="Cancel" @click="Cancel"  class="q-ml-lg"></q-btn>
-            <q-btn label="Submit" type="submit" color="primary"></q-btn>
+            <q-btn label="Cancel" @click="Cancel"  style="color: white" class="q-mr-lg"></q-btn>
+            <q-btn v-if="authUser.siteColor" label="Submit"  type="submit" :style="{background: authUser.siteColor,color: authUser.textColor}"></q-btn>
+            <q-btn v-else  label="Submit"  type="submit" color="primary"></q-btn>
           </div>
 
         </q-form>
@@ -143,6 +157,8 @@ export default {
 
 
   </q-page-container>
+  </q-page>
+  <home-view v-else :auth-user="authUser"/>
 
 </template>
 

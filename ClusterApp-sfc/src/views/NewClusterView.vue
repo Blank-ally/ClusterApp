@@ -6,6 +6,7 @@ import ClusterCollection from "@/firebase/ClusterCollection.js";
 import ClassificationCollection from "@/firebase/ClassificationCollection.js";
 import Classification from "@/components/models/Classification.js";
 import User from "@/components/models/User.js";
+import HomeView from "@/views/HomeView.vue";
 
 export default {
   name: "Cluster",
@@ -21,24 +22,35 @@ export default {
 
     authUser: {type: User, required: true},
   },
-  components: {ClassificationList},
+  components: {ClassificationList,HomeView},
   methods: {
-    deleteClassification(){
-      console.log('here add a thing for the cluster  ')
+    deleteClassification(clas){
+    let ind = this.newCluster.classifications.indexOf(clas)
+      this.newCluster.classifications.splice(ind)
+
+    },
+    editClassification(clas){
+
 
     },
     AddNewClassification() {
-      this.newCluster.addClassification(this.classification)
-      this.classification = new Classification()
+      if(this.classification.name.trim() !== "" ) {
+        this.newCluster.addClassification(this.classification)
+        this.classification = new Classification()
+      }
     },
     AddNewCluster() {
       debugger
       ClusterCollection.addCluster(this.authUser, this.newCluster)
-          .then(docRef => {this.newCluster.classifications.forEach((item) => {
+          .then(docRef =>
+              {this.newCluster.classifications
+                  .forEach((item) =>
+              {
                 console.log(docRef)
                 ClassificationCollection.addClassification(this.authUser, docRef, item)
 
-              }); return docRef}
+              });
+            return docRef}
           ).then(docRef =>  this.$router.push({name: 'NewStar', params: {clusterId: docRef.id}}))
           .catch(error => console.log(error));
 
@@ -52,18 +64,20 @@ export default {
   },
 }
 
-// TODO: request the cluster types pull  from the database
 
 </script>
 
 <template>
-
+  <q-page  v-if="authUser?.exists()">
 
   <q-page-container>
 
 
-    <div class="row justify-center ">
-      <div class="col-md-6 col-12 text-center text-h3 q-pa-lg">
+    <div class="row  flex justify-center ">
+      <div v-if="authUser.textColor" :style="{color: authUser.textColor}" class="col-md-6 col-12 text-center text-h3 q-pa-lg">
+        New Cluster
+      </div>
+      <div v-else style="color:#1976D2 " class="col-md-6 col-12 text-center text-h3 q-pa-lg">
         New Cluster
       </div>
     </div>
@@ -89,24 +103,25 @@ export default {
                    v-model="classification.name"
                    lazy-rules
                    bg-color="white">
-            <q-btn round dense flat icon="add" @click="AddNewClassification"></q-btn>
+            <q-btn round dense flat v-if="authUser.siteColor" :style="{color: authUser.siteColor}"  label="Add" @click="AddNewClassification"></q-btn>
+            <q-btn round dense flat v-else  label="Add" @click="AddNewClassification"></q-btn>
           </q-input>
 
 
-          <classification-list  @delete-classification="clas => deleteClassification()" :list="newCluster.classifications"></classification-list>
+          <classification-list @edit-classification="clas => editClassification(clas)"  @delete-classification="clas => deleteClassification(clas)" :list="newCluster.classifications"></classification-list>
 
-
+<!--
           <q-toggle v-model="newCluster.isPublic" label="Public"></q-toggle>
 <br>
-          <q-toggle v-model="newCluster.favorite" label="Favorite"></q-toggle>
+          <q-toggle v-model="newCluster.favorite" label="Favorite"></q-toggle>-->
 
 
 
 
           <div class="flex justify-end">
-            <q-btn label="Cancel" @click="Cancel" class="q-mr-lg"></q-btn>
-            <q-btn label="Submit"  type="submit" color="primary"></q-btn>
-
+            <q-btn label="Cancel" @click="Cancel"  style="color: white" class="q-mr-lg"></q-btn>
+            <q-btn v-if="authUser.siteColor" label="Submit"  type="submit" :style="{background: authUser.siteColor,color: authUser.textColor}"></q-btn>
+            <q-btn v-else  label="Submit"  type="submit" color="primary"></q-btn>
 
           </div>
 
@@ -118,7 +133,8 @@ export default {
 
   </q-page-container>
 
-
+  </q-page>
+  <home-view v-else :auth-user="authUser"/>
 </template>
 
 <style scoped>
