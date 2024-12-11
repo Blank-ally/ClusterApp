@@ -26,11 +26,11 @@ export default {
 
   },
 
-async mounted() {
+  async mounted() {
 
     this.currentCluster =  await ClusterCollection.getCluster(this.authUser,this.clusterId)
-  this.getSyncList()
-},
+    this.getSyncList()
+  },
   methods:{
 
     deleteClassification(){
@@ -47,8 +47,8 @@ async mounted() {
     getSyncList(){
       if(this.authUser?.id) {
 
-             StarCollection.syncStars(this.authUser, this.currentCluster, this.list)
-                 .catch(error => console.log(error))
+        StarCollection.syncStars(this.authUser, this.currentCluster, this.list)
+            .catch(error => console.log(error))
       }
     },
     deleteCluster(){
@@ -79,19 +79,19 @@ async mounted() {
       <div class="row justify-center ">
         <div class="col-md-6  justify-center text-h3">
           <div class="q-pa-xl">
-            <q-card class="header-card text-center">
+            <q-card :style="{color: authUser?.cardTextColor || black, background:authUser?.cardColor || white}" class="header-card text-center">
               <q-card-section>
                 <div class="text-h2 q-pa-sm">{{ currentCluster.name }}</div>
                 <div class="text-h5">created: {{currentCluster.creationDate}}</div>
               </q-card-section>
 
               <q-card-actions align="around">
-                <q-btn padding="lg xl" flat @click="setEditCluster" class="p-4">
+                <q-btn :style="{color: authUser?.buttonColor || '#1976D2'}" padding="lg xl" flat @click="setEditCluster" class="p-4">
                   <q-icon left >
                     <i class="fa-solid fa-pen-to-square"></i>
                   </q-icon>
                 </q-btn>
-                <q-btn  padding="lg xl" flat  @click="confirm = true">
+                <q-btn :style="{color: authUser?.buttonColor || '#1976D2'}" padding="lg xl" flat  @click="confirm = true">
                   <q-icon>
                     <i class="fa-solid fa-trash"></i>
                   </q-icon>
@@ -106,7 +106,7 @@ async mounted() {
       <div class="row q-col-gutter-lg self-center">
         <div class="col-12">
           <div class=" q-pa-lg">
-            <q-btn  flat  v-if="authUser.siteColor" :style="{color: authUser.siteColor}"   @click="goToNewStar">
+            <q-btn  flat  v-if="authUser.buttonColor" :style="{color: authUser?.buttonColor || '#1976D2'}"   @click="goToNewStar">
               <q-icon left size="1em">
                 <i class="fa-solid fa-circle-plus fa-2x" ></i> </q-icon>
               New Star
@@ -125,7 +125,7 @@ async mounted() {
       </div>
       <div class="row q-col-gutter-lg self-center justify-center">
         <div class="col-8">
-        <star-list :cluster-id="currentCluster.id" :list="list"></star-list>
+          <star-list :auth-user="authUser" :cluster-id="currentCluster.id" :list="list"></star-list>
         </div>
       </div>
 
@@ -133,7 +133,7 @@ async mounted() {
 
       <!-- modal -->
       <q-dialog v-model="confirm" persistent >
-        <q-card  style="width: 700px; max-width: 80vw;">
+        <q-card  :style="{color: authUser?.cardTextColor || black, background:authUser?.cardColor || white}" style="width: 700px; max-width: 80vw;">
           <q-card-section class="row items-center">
 
             <div class="text-h6">Delete {{currentCluster.name}}?</div>
@@ -146,10 +146,10 @@ async mounted() {
 
           <q-card-actions align="right">
             <div class="q-gutter-xl">
-              <q-btn flat label="Delete" color="primary" v-close-popup @click="deleteCluster"></q-btn>
+              <q-btn flat label="Delete" :style="{color: authUser?.buttonTextColor || white, background: authUser?.buttonColor|| '#1976D2' }" v-close-popup @click="deleteCluster"></q-btn>
             </div>
             <div class="q-gutter-xl">
-              <q-btn flat label="Cancel" color="primary" v-close-popup ></q-btn>
+              <q-btn :style="{color: authUser?.buttonTextColor || white, background: authUser?.buttonColor|| '#1976D2' }" flat label="Cancel"  v-close-popup ></q-btn>
             </div>
           </q-card-actions>
         </q-card>
@@ -170,4 +170,3 @@ async mounted() {
   }
 }*/
 </style>
-

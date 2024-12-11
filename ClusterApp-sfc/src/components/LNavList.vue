@@ -39,7 +39,7 @@ export default {
       router.push({name:'Settings'})
     },
     logout() {
-console.log('Logging out')
+      console.log('Logging out')
       signOut(auth).then(()=> router.push('/')).then(() => this.toggleRightDrawer())
           .catch(error => console.log(' Logout error! '+ error))
     },
@@ -55,7 +55,7 @@ console.log('Logging out')
 
 <template>
 
-  <q-header elevated v-if="authUser?.id" :style="{background: authUser.siteColor }" >
+  <q-header elevated v-if="authUser?.id" :style="{background: authUser.siteColor,color:authUser?.textColor || white }" >
     <q-toolbar>
       <q-toolbar-title>
         <q-btn flat  @click="$router.push({name: 'ClusterCollection'})"  :list="list">  <!-- check if user is null if not display cluster collection-->
@@ -79,28 +79,28 @@ console.log('Logging out')
         </q-btn><!-- check if user is null if not display cluster collection-->
 
       </q-toolbar-title>
-<!--      <q-btn dense flat round icon="fa-solid fa-bars" @click="toggleRightDrawer" />-->
+      <!--      <q-btn dense flat round icon="fa-solid fa-bars" @click="toggleRightDrawer" />-->
     </q-toolbar>
 
 
   </q-header>
 
-  <q-drawer  v-model="rightDrawerOpen" side="right" bordered>
+  <q-drawer :style="{color: authUser?.buttonColor || '#1976D2'}" v-model="rightDrawerOpen" side="right" bordered>
     <!-- drawer content -->
     <!--  TODO: customize this  -->
     <q-scroll-area style="height: calc(100% - 150px); margin-top: 150px; border-right: 1px solid #ddd">
       <q-list padding>
 
-<!--
-        <q-item  clickable v-ripple>
-          <q-item-section avatar>
-            <q-icon name="fa-solid fa-user"></q-icon>
-          </q-item-section>
-          <q-item-section>
-          <q-btn  flat @click="toProfile">Profile</q-btn>
-          </q-item-section>
-        </q-item>
--->
+        <!--
+                <q-item  clickable v-ripple>
+                  <q-item-section avatar>
+                    <q-icon name="fa-solid fa-user"></q-icon>
+                  </q-item-section>
+                  <q-item-section>
+                  <q-btn  flat @click="toProfile">Profile</q-btn>
+                  </q-item-section>
+                </q-item>
+        -->
 
         <q-item clickable v-ripple>
           <q-item-section avatar>
@@ -125,21 +125,21 @@ console.log('Logging out')
     </q-scroll-area>
 
     <q-img class="absolute-top"  v-if="authUser.backgroundUrl" :src="authUser.backgroundUrl" style="height: 150px">
-        <div class="absolute-bottom bg-transparent">
-          <!--        <q-avatar size="56px" class="q-mb-sm">
-          &lt;!&ndash;          <img :src="authUser.profileURL">&ndash;&gt;
-                  </q-avatar>-->
-          <div class="text-weight-bold">{{ authUser.displayName}}</div>
-          <div>{{authUser.email}}</div>
-        </div>
-      </q-img>
-      <q-img class="absolute-top" v-else  src="../assets/pexels-adrien-olichon-1257089-2538107.jpg" style="height: 150px">
       <div class="absolute-bottom bg-transparent">
-<!--        <q-avatar size="56px" class="q-mb-sm">
-&lt;!&ndash;          <img :src="authUser.profileURL">&ndash;&gt;
-        </q-avatar>-->
-      <div class="text-weight-bold">{{ authUser.displayName}}</div>
-       <div>{{authUser.email}}</div>
+        <!--        <q-avatar size="56px" class="q-mb-sm">
+        &lt;!&ndash;          <img :src="authUser.profileURL">&ndash;&gt;
+                </q-avatar>-->
+        <div class="text-weight-bold">{{ authUser.displayName}}</div>
+        <div>{{authUser.email}}</div>
+      </div>
+    </q-img>
+    <q-img class="absolute-top" v-else  src="../assets/pexels-adrien-olichon-1257089-2538107.jpg" style="height: 150px">
+      <div class="absolute-bottom bg-transparent">
+        <!--        <q-avatar size="56px" class="q-mb-sm">
+        &lt;!&ndash;          <img :src="authUser.profileURL">&ndash;&gt;
+                </q-avatar>-->
+        <div class="text-weight-bold">{{ authUser.displayName}}</div>
+        <div>{{authUser.email}}</div>
       </div>
     </q-img>
   </q-drawer>

@@ -1,6 +1,7 @@
 <script>
 import router from "@/router/index.js";
 import Star from "@/components/models/Star.js";
+import User from "@/components/models/User.js";
 
 export default {
   name: "StarItem",
@@ -19,7 +20,8 @@ export default {
     clusterId: {
       type: String,
       required: true,
-    }
+    },
+    authUser: {type: User, required: true},
   },
   methods: {
     SetCurrentStar(){
@@ -66,8 +68,8 @@ export default {
 </script>
 
 <template>
-  <q-card class="card  cursor-pointer" @click="SetCurrentStar()">
-    <img :src="star.photoURL" style="max-width: 250px; max-height: 150px; width: 100%; height: 100%">
+  <q-card :style="{color:authUser?.cardTextColor || black, background: authUser?.cardColor || white }" class="card  cursor-pointer" @click="SetCurrentStar()">
+    <q-img :src="star.photoURL" style="max-width: 250px; max-height: 150px; width: 100%; height: 100%"></q-img>
 
     <q-card-section>
       <div class="text-h6">

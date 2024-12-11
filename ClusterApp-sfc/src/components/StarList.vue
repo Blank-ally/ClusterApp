@@ -1,5 +1,6 @@
 <script>
 import StarItem from "@/components/StarItem.vue";
+import User from "@/components/models/User.js";
 
 export default {
   name: "StarList",
@@ -20,7 +21,8 @@ export default {
     clusterId:{
       type:String,
       required: true,
-    }
+    },
+    authUser: {type: User, required: true},
   },
 
   // methods: Usually "events" triggered by v-on:
@@ -43,7 +45,7 @@ export default {
 <template>
   <div class="row q-col-gutter-md">
     <div class="col-lg-3 col-sm-6" v-for="item in list">
-      <star-item :cluster-id="clusterId" :star="item"></star-item>
+      <star-item :auth-user="authUser" :cluster-id="clusterId" :star="item"></star-item>
     </div>
   </div>
 </template>

@@ -34,9 +34,9 @@ export default {
   },
   methods:{
     addnewStar(){
-    StarCollection.addStar(this.authUser,this.currentCluster,this.newStar)
-        .then(() => this.$router.push({name: 'Cluster', params:{clusterId: this.clusterId}}))
-        .catch(error => console.log(error))},
+      StarCollection.addStar(this.authUser,this.currentCluster,this.newStar)
+          .then(() => this.$router.push({name: 'Cluster', params:{clusterId: this.clusterId}}))
+          .catch(error => console.log(error))},
 
     cancel(){
       this.$router.push({name: 'Cluster',  params:{clusterId: this.clusterId}})
@@ -78,61 +78,62 @@ export default {
                 <q-img   v-else src="@/assets/StarDefault.png" :ratio="4/3"></q-img>
 
 
-            <q-input
-                class="q-ma-md"
-                filled
-                v-model="newStar.photoURL"
-                lazy-rules
-                bg-color="white"
-                type="file"
-                @change="previewUploadImg"
-            ></q-input>
+                <q-input
+                    class="q-ma-md"
+                    filled
+                    v-model="newStar.photoURL"
+                    lazy-rules
+                    bg-color="white"
+                    type="file"
+                    accept=".jpg, image/*"
+                    @change="previewUploadImg"
+                ></q-input>
               </div>
               <div class="col-md-6 col-12">
 
-            <q-input
-                filled
-                v-model="newStar.name"
-                label="Star Name"
-                lazy-rules
-                bg-color="white"
-                class="q-ma-md"
-                :rules="[ val => val && val.length > 0 || 'Please type something']"
+                <q-input
+                    filled
+                    v-model="newStar.name"
+                    label="Star Name"
+                    lazy-rules
+                    bg-color="white"
+                    class="q-ma-md"
+                    :rules="[ val => val && val.length > 0 || 'Please type something']"
 
-            ></q-input>
+                ></q-input>
 
-            <q-select style="color: #0c0101;background: white" class="q-ma-md" v-if="currentCluster.classifications.length" standout v-model="newStar.classification"  label="Classifications" :options="currentCluster.classifications?.map(item => ({value: item.name, label: item.name}))" ></q-select>
+                <q-select style="color: #0c0101;background: white" class="q-ma-md" v-if="currentCluster.classifications.length" standout v-model="newStar.classification"  label="Classifications" :options="currentCluster.classifications?.map(item => ({value: item.name, label: item.name}))" ></q-select>
 
-            <q-input
-                filled
-                type="number"
-                v-model="newStar.qty"
-                label="Qty"
-                lazy-rules
-                bg-color="white"
-                class="q-ma-md"
-                :rules="[
+                <q-input
+                    filled
+                    type="number"
+                    v-model="newStar.qty"
+                    label="Qty"
+                    lazy-rules
+                    bg-color="white"
+                    class="q-ma-md"
+                    :rules="[
             val => val !== null && val !== '' || 'Please type your age',
             val => val > 0 || 'Please enter a Qty'
           ]"
-            ></q-input>
-            <q-input
-                v-model="newStar.notes"
-                filled
-                label="Notes"
-                type="textarea"
-                bg-color="white"
-                class="q-ma-md"
-            ></q-input>
+                ></q-input>
+                <q-input
+                    v-model="newStar.notes"
+                    filled
+                    label="Notes"
+                    type="textarea"
+                    bg-color="white"
+                    class="q-ma-md"
+                ></q-input>
               </div>
             </div>
-                <div class="flex justify-end">
-                  <q-btn label="Cancel" @click="cancel"  style="color: white" class="q-mr-lg"></q-btn>
-                  <q-btn v-if="authUser.siteColor" label="Submit"  type="submit" :style="{background: authUser.siteColor,color: authUser.textColor}"></q-btn>
-                  <q-btn v-else  label="Submit"  type="submit" color="primary"></q-btn>
+            <div class="flex justify-end">
+              <q-btn label="Cancel" @click="cancel"  style="color: white" class="q-mr-lg"></q-btn>
+              <q-btn v-if="authUser.siteColor" label="Submit"  type="submit" :style="{color: authUser?.buttonTextColor || white, background: authUser?.buttonColor|| '#1976D2' }"></q-btn>
+              <q-btn v-else  label="Submit"  type="submit" color="primary"></q-btn>
 
 
-                </div>
+            </div>
 
 
 

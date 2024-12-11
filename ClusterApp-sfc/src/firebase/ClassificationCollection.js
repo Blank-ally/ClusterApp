@@ -30,7 +30,7 @@ export default class ClassificationCollection {
             classificationsCollection,
         ).withConverter(Classification);
         onSnapshot(ClassificationsQuery, snapshot => {
-            classifications.splice(0, classifications.length);
+                classifications.splice(0, classifications.length);
                 snapshot.forEach(doc => {
                     classifications.push(doc.data());
                 })
@@ -98,4 +98,3 @@ export default class ClassificationCollection {
         return addDoc(classificationsCollection, classification.toFirestore())
     }
 }
-

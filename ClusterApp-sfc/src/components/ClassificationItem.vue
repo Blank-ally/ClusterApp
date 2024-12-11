@@ -42,19 +42,19 @@ export default {
 <template>
   <q-item>
     <q-item-section>
-   <q-item-label style="color:black ">{{clas.name}}</q-item-label>
-<!--      <q-popup-edit v-model="clas.name" auto-save >
-        <q-input v-model="clas.name" dense autofocus counter @keyup.enter="$emit('edit-classification',clas)" />
-      </q-popup-edit>-->
+      <q-item-label style="color:black ">{{clas.name}}</q-item-label>
+      <!--      <q-popup-edit v-model="clas.name" auto-save >
+              <q-input v-model="clas.name" dense autofocus counter @keyup.enter="$emit('edit-classification',clas)" />
+            </q-popup-edit>-->
     </q-item-section>
 
-        <q-item-section top side>
-                            <div class="text-grey-8 q-gutter-xs">
-                                <q-btn size="12px" flat dense round icon="delete" @click="$emit('delete-classification',clas)"></q-btn>
-<!--                                <q-btn class="gt-xs" size="12px" flat dense round icon="fa-solid fa-pen-to-square"></q-btn>-->
+    <q-item-section top side>
+      <div class="text-grey-8 q-gutter-xs">
+        <q-btn size="12px" flat dense round icon="delete" @click="$emit('delete-classification',clas)"></q-btn>
+        <!--                                <q-btn class="gt-xs" size="12px" flat dense round icon="fa-solid fa-pen-to-square"></q-btn>-->
 
-                            </div>
-        </q-item-section>
+      </div>
+    </q-item-section>
 
   </q-item>
 </template>

@@ -25,7 +25,7 @@ export default {
   components: {ClassificationList,HomeView},
   methods: {
     deleteClassification(clas){
-    let ind = this.newCluster.classifications.indexOf(clas)
+      let ind = this.newCluster.classifications.indexOf(clas)
       this.newCluster.classifications.splice(ind)
 
     },
@@ -45,12 +45,12 @@ export default {
           .then(docRef =>
               {this.newCluster.classifications
                   .forEach((item) =>
-              {
-                console.log(docRef)
-                ClassificationCollection.addClassification(this.authUser, docRef, item)
+                  {
+                    console.log(docRef)
+                    ClassificationCollection.addClassification(this.authUser, docRef, item)
 
-              });
-            return docRef}
+                  });
+                return docRef}
           ).then(docRef =>  this.$router.push({name: 'NewStar', params: {clusterId: docRef.id}}))
           .catch(error => console.log(error));
 
@@ -70,68 +70,68 @@ export default {
 <template>
   <q-page  v-if="authUser?.exists()">
 
-  <q-page-container>
+    <q-page-container>
 
 
-    <div class="row  flex justify-center ">
-      <div v-if="authUser.textColor" :style="{color: authUser.textColor}" class="col-md-6 col-12 text-center text-h3 q-pa-lg">
-        New Cluster
+      <div class="row  flex justify-center ">
+        <div v-if="authUser.textColor" :style="{color: authUser.textColor}" class="col-md-6 col-12 text-center text-h3 q-pa-lg">
+          New Cluster
+        </div>
+        <div v-else style="color:#1976D2 " class="col-md-6 col-12 text-center text-h3 q-pa-lg">
+          New Cluster
+        </div>
       </div>
-      <div v-else style="color:#1976D2 " class="col-md-6 col-12 text-center text-h3 q-pa-lg">
-        New Cluster
+
+      <div class="q-pa-xl row justify-center ">
+        <div class="col-md-6 col-12 ">
+          <q-form
+              @submit.prevent="AddNewCluster"
+              class="q-gutter-sm form-background">
+
+            <q-input
+                filled
+                v-model="newCluster.name"
+                label="Cluster Name *"
+                lazy-rules
+                bg-color="white"
+                :rules="[ val => val && val.length > 0 || 'Please type something']"
+            ></q-input>
+
+
+            <q-input filled
+                     label="New Classification"
+                     v-model="classification.name"
+                     lazy-rules
+                     bg-color="white">
+              <q-btn round dense flat v-if="authUser.siteColor" :style="{color: authUser.siteColor}"  label="Add" @click="AddNewClassification"></q-btn>
+              <q-btn round dense flat v-else  label="Add" @click="AddNewClassification"></q-btn>
+            </q-input>
+
+
+            <classification-list @edit-classification="clas => editClassification(clas)"  @delete-classification="clas => deleteClassification(clas)" :list="newCluster.classifications"></classification-list>
+
+            <!--
+                      <q-toggle v-model="newCluster.isPublic" label="Public"></q-toggle>
+            <br>
+                      <q-toggle v-model="newCluster.favorite" label="Favorite"></q-toggle>-->
+
+
+
+
+            <div class="flex justify-end">
+              <q-btn label="Cancel" @click="Cancel"  style="color: white" class="q-mr-lg"></q-btn>
+              <q-btn v-if="authUser.siteColor" label="Submit"  type="submit" :style="{color: authUser?.buttonTextColor || white, background: authUser?.buttonColor|| '#1976D2' }"></q-btn>
+              <q-btn v-else  label="Submit"  type="submit" color="primary"></q-btn>
+
+            </div>
+
+          </q-form>
+
+        </div>
       </div>
-    </div>
-
-    <div class="q-pa-xl row justify-center ">
-      <div class="col-md-6 col-12 ">
-        <q-form
-            @submit.prevent="AddNewCluster"
-            class="q-gutter-sm form-background">
-
-          <q-input
-              filled
-              v-model="newCluster.name"
-              label="Cluster Name *"
-              lazy-rules
-              bg-color="white"
-              :rules="[ val => val && val.length > 0 || 'Please type something']"
-          ></q-input>
 
 
-          <q-input filled
-                   label="New Classification"
-                   v-model="classification.name"
-                   lazy-rules
-                   bg-color="white">
-            <q-btn round dense flat v-if="authUser.siteColor" :style="{color: authUser.siteColor}"  label="Add" @click="AddNewClassification"></q-btn>
-            <q-btn round dense flat v-else  label="Add" @click="AddNewClassification"></q-btn>
-          </q-input>
-
-
-          <classification-list @edit-classification="clas => editClassification(clas)"  @delete-classification="clas => deleteClassification(clas)" :list="newCluster.classifications"></classification-list>
-
-<!--
-          <q-toggle v-model="newCluster.isPublic" label="Public"></q-toggle>
-<br>
-          <q-toggle v-model="newCluster.favorite" label="Favorite"></q-toggle>-->
-
-
-
-
-          <div class="flex justify-end">
-            <q-btn label="Cancel" @click="Cancel"  style="color: white" class="q-mr-lg"></q-btn>
-            <q-btn v-if="authUser.siteColor" label="Submit"  type="submit" :style="{background: authUser.siteColor,color: authUser.textColor}"></q-btn>
-            <q-btn v-else  label="Submit"  type="submit" color="primary"></q-btn>
-
-          </div>
-
-        </q-form>
-
-      </div>
-    </div>
-
-
-  </q-page-container>
+    </q-page-container>
 
   </q-page>
   <home-view v-else :auth-user="authUser"/>

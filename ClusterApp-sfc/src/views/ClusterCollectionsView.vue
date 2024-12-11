@@ -48,37 +48,37 @@ export default {
 
 <template>
   <q-page  v-if="authUser?.exists()">
-  <q-page-container>
+    <q-page-container>
 
-    <div class="row justify-center ">
-      <div v-if="authUser.textColor" class="col-6 text-center text-h3 q-pa-lg">
-        Clusters
-      </div>
-      <div v-else style="color: #1976D2" class="col-6 text-center text-h3 q-pa-lg">
-        Clusters
-      </div>
-    </div>
-
-    <div class="row q-col-gutter-lg self-center">
-      <div class="col-4">
-        <div class=" q-px-lg">
-          <q-btn v-if="authUser.siteColor" flat :style="{color: authUser.siteColor}"  to="/NewCluster">
-            <q-icon name="fa-solid fa-circle-plus fa-2x" left size="1em"/>
-            New Cluster
-          </q-btn>
-          <q-btn  v-else flat color="primary"   to="/NewCluster">
-            <q-icon name="fa-solid fa-circle-plus fa-2x" left size="1em"/>
-            New Cluster
-          </q-btn>
+      <div class="row justify-center ">
+        <div v-if="authUser.textColor" class="col-6 text-center text-h3 q-pa-lg">
+          Clusters
+        </div>
+        <div v-else style="color: #1976D2" class="col-6 text-center text-h3 q-pa-lg">
+          Clusters
         </div>
       </div>
-    </div>
-    <div class="row q-col-gutter-lg self-center justify-center">
-      <div class="col-8">
-        <cluster-list :auth-user="authUser" :list="list"></cluster-list>
+
+      <div class="row q-col-gutter-lg self-center">
+        <div class="col-4">
+          <div class=" q-px-lg">
+            <q-btn v-if="authUser.buttonColor" :style="{color: authUser?.buttonColor || '#1976D2'}"    to="/NewCluster">
+              <q-icon name="fa-solid fa-circle-plus fa-2x" left size="1em"/>
+              New Cluster
+            </q-btn>
+            <q-btn  v-else flat color="primary"   to="/NewCluster">
+              <q-icon name="fa-solid fa-circle-plus fa-2x" left size="1em"/>
+              New Cluster
+            </q-btn>
+          </div>
+        </div>
       </div>
-    </div>
-  </q-page-container>
+      <div class="row q-col-gutter-lg self-center justify-center">
+        <div class="col-8">
+          <cluster-list :auth-user="authUser" :list="list"></cluster-list>
+        </div>
+      </div>
+    </q-page-container>
   </q-page>
 
   <home-view v-else :auth-user="authUser"/>

@@ -41,20 +41,20 @@ export default {
   },
   methods: {
 
-  loginWithGoogle() {
+    loginWithGoogle() {
       signInWithPopup(auth,authProvider).then(()=> {
         this.errorMsg = '';
         this.authUser.password = ''
         router.push('/ClusterCollection')}) // .then not required in case of wanting to  do  more with  tokens
-         .catch(error => console.log('Login error! '+ error)) // my code will not hava notification  model unless i make one
+          .catch(error => console.log('Login error! '+ error)) // my code will not hava notification  model unless i make one
     },
 
 
     CreateWithUser(){
-    debugger
+      debugger
       createUserWithEmailAndPassword(auth,this.authUser.email, this.authUser.password)
           .then(() => {UserCollection.updateUser(this.authUser)
-          this.errorMsg =''}
+            this.errorMsg =''}
           )
           .then(()=> router.push('/ClusterCollection'))
           .catch(error => {
@@ -65,11 +65,11 @@ export default {
             this.errorMsg = "! The email entered is already in use please sign in or try other credentials"
             this.authUser.password = ''
           });
-     // this.authUser.displayName = '';
+      // this.authUser.displayName = '';
 
     },
     SignInWithUsers(){
-    debugger
+      debugger
       signInWithEmailAndPassword(auth, this.authUser.email, this.authUser.password)
           .then(() => {console.log("Logged in idk why theres two ")
             this.errorMsg = "";
@@ -116,8 +116,8 @@ export default {
             @submit="SignInWithUsers"
 
         >
-        <h2>Sign In</h2>
-       <p style="color: darkred; text-align: center;" >{{errorMsg}}</p>
+          <h2>Sign In</h2>
+          <p style="color: darkred; text-align: center;" >{{errorMsg}}</p>
 
 
           <q-input  type="email"  v-model="authUser.email" label="Email Address" :dense="dense"
@@ -131,7 +131,7 @@ export default {
                    v-model="authUser.password"
                    type="password"
                    label="Password"
-                    reactive-rules
+                   reactive-rules
                    :rules="[((val) => !!val || 'Please enter a password'), (val => !(val.length < 8) || 'Please type at least 8 characters') ]"
 
           ></q-input>
@@ -168,7 +168,7 @@ export default {
           <q-form
               @submit="CreateWithUser"
           >
-          <h2>Sign Up</h2>
+            <h2>Sign Up</h2>
             <p style="color: darkred; text-align: center;" >{{errorMsg}}</p>
             <q-input  v-model="authUser.displayName" label="UserName" :dense="dense"
                       reactive-rules
@@ -183,7 +183,7 @@ export default {
                      reactive-rules
                      :rules="[((val) => !!val || 'Please enter a password'), (val => !(val.length < 8) || 'Please type at least 8 characters') ]"></q-input>
 
-          <q-btn   type="submit"  class="submit">Sign Up Now</q-btn>
+            <q-btn   type="submit"  class="submit">Sign Up Now</q-btn>
           </q-form>
         </div>
       </div>
@@ -265,8 +265,8 @@ button{
   text-transform: uppercase;
   font-weight: 600;
   font-family: 'Nunito', sans-serif;
-    background-image: url(../assets/pexels-adrien-olichon-1257089-2538107.jpg);
-    background-size: contain;
+  background-image: url(../assets/pexels-adrien-olichon-1257089-2538107.jpg);
+  background-size: contain;
 
 }
 

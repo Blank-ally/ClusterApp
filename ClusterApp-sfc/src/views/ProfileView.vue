@@ -1,11 +1,10 @@
 <script>
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import User from "@/components/models/User.js";
-import HomeView from "@/views/HomeView.vue";
 
 export default {
   name: "Profile",
-  components: {FontAwesomeIcon,HomeView},
+  components: {FontAwesomeIcon},
 
   data: function(){
     return {
@@ -39,7 +38,7 @@ export default {
 </script>
 
 <template >
-  <q-page  v-if="authUser?.exists()">
+
   <div class="q-pa-md">
       <q-carousel
           arrows
@@ -69,8 +68,8 @@ export default {
     </div>
 
   <q-separator />
-  </q-page>
-  <home-view v-else :auth-user="authUser"/>
+
+
 
 </template>
 

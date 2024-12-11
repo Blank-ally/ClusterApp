@@ -29,10 +29,10 @@
   animation: textShine 5s ease-in-out infinite alternate;
 }
 body{
-  background-image: url("pexels-daniel-cid-634838605-17809424.jpg");
+  background-image: url("pexels-adrien-olichon-1257089-2538107.jpg");
   background-repeat: no-repeat;
   background-size: cover;
-  color: #BF877A;
+  /*color: #BF877A;*/
 }
 
 .my-card{

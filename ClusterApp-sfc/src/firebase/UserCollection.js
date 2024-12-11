@@ -48,15 +48,14 @@ export default class UserCollection {
      * @param {User} user
      */
     static async updateUser(user){
-
-         console.log(user)
-        if (user.backgroundUrl && user.backgroundUrl[0].endsWith('.jpg') || user.backgroundUrl[0].endsWith('.jpeg') || user.backgroundUrl[0].endsWith('.png')|| user.backgroundUrl[0].endsWith('.gif') || user.backgroundUrl[0].endsWith('.webp')) {
+                       debugger
+        console.log(user)
+        if (user.backgroundUrl && user.backgroundUrl[0] && user.backgroundUrl[0]?.name?.endsWith('.jpg')|| user.backgroundUrl[0]?.name?.endsWith('.jpeg') || user.backgroundUrl[0]?.name?.endsWith('.png')|| user.backgroundUrl[0]?.name?.endsWith('.gif') || user.backgroundUrl[0]?.name?.endsWith('.webp')) {
             UserCollection.addImage(user)
         }
-           const userDoc =  UserCollection.getUserDoc(user.id)
-        //TODO:TRY TO ADD THE IMG FIRST
+        const userDoc =  UserCollection.getUserDoc(user.id)
         return updateDoc(userDoc,user.toFirestore())
-               .catch(error => console.log(error))
+            .catch(error => console.log(error))
     }
     /**
      * @param {User} user
@@ -87,16 +86,16 @@ export default class UserCollection {
             return false;
         }
 // todo: maybe remove size limit
-/*        // validate size (less than 200KB
-        if (user.backgroundUrl[0].size > (200 * 1024)) {
-            // file too large
+        /*        // validate size (less than 200KB
+                if (user.backgroundUrl[0].size > (200 * 1024)) {
+                    // file too large
 
-            // let the user know...
-            // TODO: let the user know WITHOUT alerts
-            alert('File too large. 200KB max');
+                    // let the user know...
+                    // TODO: let the user know WITHOUT alerts
+                    alert('File too large. 200KB max');
 
-            return false;
-        }*/
+                    return false;
+                }*/
 
         // TODO: add image to firebase
         const bgImage = ref(userStorage, user.id);

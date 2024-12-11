@@ -32,7 +32,7 @@ export default class ClusterCollection {
             clusterCollection
         ).withConverter(Cluster);
         onSnapshot(ClustersQuery, snapshot => {
-            clusters.splice(0, clusters.length);
+                clusters.splice(0, clusters.length);
                 snapshot.forEach(doc => {
                     clusters.push(doc.data());
                 })
@@ -95,25 +95,25 @@ export default class ClusterCollection {
      * @param {User} user
      * @param {String} clusterId
      */
-  static async getCluster(user, clusterId){
-      console.log(clusterId)
+    static async getCluster(user, clusterId){
+        console.log(clusterId)
         const ClusterRef = ClusterCollection.getClusterDocById(user,clusterId )
         console.log(` user ${user} , cLusterId  ${clusterId}, refs ${ClusterRef}`)
         const docSnap = await getDoc(ClusterRef.withConverter(Cluster));
         return docSnap.data();
 
     }
-/**
- *
- * @param {User} user
- * @param {String} clusterId
- */
+    /**
+     *
+     * @param {User} user
+     * @param {String} clusterId
+     */
 
-static  getClusterDocById(user, clusterId)
-{  console.log(user,clusterId)
-          const clustersCollection = ClusterCollection.getClusterCollection(user);
-          return doc(clustersCollection, clusterId);
-}
+    static  getClusterDocById(user, clusterId)
+    {  console.log(user,clusterId)
+        const clustersCollection = ClusterCollection.getClusterCollection(user);
+        return doc(clustersCollection, clusterId);
+    }
 
 
     /**
@@ -135,7 +135,7 @@ static  getClusterDocById(user, clusterId)
         const clusterCollection = ClusterCollection.getClusterCollection(user);
         debugger
         const  clusterQuery = (searchTerm == "" ) ? ClusterCollection.syncClusters(user,clusters) : query(clusterCollection,
-             where('searchTerms', 'array-contains',searchTerm)
+            where('searchTerms', 'array-contains',searchTerm)
         ).withConverter(Cluster);
         clusters.splice(0, clusters.length);
         onSnapshot(clusterQuery, snapshot => {

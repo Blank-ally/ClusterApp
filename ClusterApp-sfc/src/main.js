@@ -11,7 +11,7 @@ const Cluster = createApp(App)
 Cluster.use(router)
 
 
-import { Quasar } from 'quasar'
+import {Notify, Quasar} from 'quasar'
 
 // Import icon libraries
 import '@quasar/extras/material-icons/material-icons.css'
@@ -27,7 +27,10 @@ import 'quasar/src/css/index.sass'
 
 
 Cluster.use(Quasar, {
-    plugins: {}, // import Quasar plugins and add here
+    plugins: {
+
+    },
+// import Quasar plugins and add here
     iconSet: quasarIconSet,
 }) // import Quasar plugins and add here
 

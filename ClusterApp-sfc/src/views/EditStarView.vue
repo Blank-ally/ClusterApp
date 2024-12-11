@@ -80,11 +80,11 @@ export default {
           >
             <div class="row">
               <div class="col-12">
-                    <q-btn style="color: white" padding="lg xl" flat  @click="confirm = true">
-                      <q-icon>
-                        <i  class="fa-solid fa-trash"></i>
-                      </q-icon>
-                    </q-btn>
+                <q-btn style="color: white" padding="lg xl" flat  @click="confirm = true">
+                  <q-icon>
+                    <i  class="fa-solid fa-trash"></i>
+                  </q-icon>
+                </q-btn>
 
               </div>
               <div class="col-md-6 col-12">
@@ -100,6 +100,7 @@ export default {
                     bg-color="white"
                     type="file"
                     class="q-ma-md"
+                    accept=".jpg, image/*"
                     @change="previewUploadImg"
                 ></q-input>
               </div>
@@ -144,7 +145,7 @@ export default {
 
             <div class="flex justify-end">
               <q-btn label="Cancel" @click="cancel"  style="color: white" class="q-mr-lg"></q-btn>
-              <q-btn v-if="authUser.siteColor" label="Submit"  type="submit" :style="{background: authUser.siteColor,color: authUser.textColor}"></q-btn>
+              <q-btn v-if="authUser.siteColor" label="Submit"  type="submit" :style="{color: authUser?.buttonTextColor || white, background: authUser?.buttonColor|| '#1976D2' }"></q-btn>
               <q-btn v-else  label="Submit"  type="submit" color="primary"></q-btn>
 
 
@@ -168,10 +169,10 @@ export default {
 
           <q-card-actions align="right">
             <div class="q-gutter-xl">
-              <q-btn flat label="Delete" color="primary" v-close-popup @click="deleteStar()"></q-btn>
+              <q-btn flat label="Delete" :style="{color: authUser?.buttonTextColor || white, background: authUser?.buttonColor|| '#1976D2' }" v-close-popup @click="deleteStar()"></q-btn>
             </div>
             <div class="q-gutter-xl">
-              <q-btn flat label="Cancel" color="primary" v-close-popup ></q-btn>
+              <q-btn flat label="Cancel" :style="{color: authUser?.buttonTextColor || white, background: authUser?.buttonColor|| '#1976D2' }" v-close-popup ></q-btn>
             </div>
           </q-card-actions>
         </q-card>

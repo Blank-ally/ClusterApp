@@ -1,4 +1,6 @@
 <script>
+import User from "@/components/models/User.js";
+
 export default {
   name: "LSearch",
   data: function(){
@@ -8,7 +10,8 @@ export default {
     }
   },
   props: {
-    onSearch: Function
+    onSearch: Function,
+    authUser: {type: User, required: true},
   },
   methods: {
     search(){
@@ -31,7 +34,7 @@ export default {
         filled
         bg-color="white"
     />
-    <q-btn type="submit" color="primary" class="col-auto">
+    <q-btn :style="{color: authUser?.buttonTextColor || white, background: authUser?.buttonColor|| '#1976D2' }" type="submit"  class="col-auto">
       <q-icon name="search" />
     </q-btn>
   </q-form>
