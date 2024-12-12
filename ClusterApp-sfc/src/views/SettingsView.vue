@@ -25,7 +25,7 @@ export default {
       this.previewImg = URL.createObjectURL(this.authUser.backgroundUrl[0])
     },
     savePersonlizations(){
-      UserCollection.updateUser(this.authUser)
+    UserCollection.updateUser(this.authUser).then(()=> {alert('Saved')})
     }
 
   }

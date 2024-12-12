@@ -87,7 +87,7 @@ this.$router.push({name:'Cluster', params:{clusterId:this.cluster.id}})
     </div>
     <q-card-section>
 
-      <div class="text-h6">{{cluster.name}}</div>
+      <div class="choice text-h6">{{cluster.name}}</div>
 
     </q-card-section>
   </q-card>
@@ -105,5 +105,8 @@ this.$router.push({name:'Cluster', params:{clusterId:this.cluster.id}})
 </template>
 
 <style scoped>
-
+div.choice {
+  white-space:normal !important;
+  word-wrap: break-word;
+}
 </style>

@@ -33,6 +33,8 @@ export default {
         class="col"
         filled
         bg-color="white"
+        clearable
+        clear-icon="close"
     />
     <q-btn :style="{color: authUser?.buttonTextColor || white, background: authUser?.buttonColor|| '#1976D2' }" type="submit"  class="col-auto">
       <q-icon name="search" />
