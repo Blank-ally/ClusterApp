@@ -70,7 +70,7 @@ export default {
 
 
     },
-    AddNewClassification(classification ){
+    AddNewClassification( ){
       if(this.classification.name.trim() !== ""){
         debugger
         ClassificationCollection.addClassification(this.authUser,this.editCluster,this.classification).then(() => this.classification = new Classification())
@@ -111,7 +111,7 @@ export default {
       <div class="q-pa-xl row justify-center ">
         <div class="col-md-6 col-12 ">
           <q-form
-              @submit.prevent="editCurrentCluster"
+              @submit="editCurrentCluster"
               class="q-gutter-md form-background"
           >
 
@@ -137,18 +137,12 @@ export default {
 
             <classification-list @edit-classification="clas => editClassification(clas)" @delete-classification="clas => deleteClassification(clas)"
                                  :list="list"></classification-list>
-            <!-- needs to be pulled from database -->
-
-            <!--
-                      <q-toggle v-model="editCluster.isPublic" label="Public"></q-toggle>
-                      <br>
-                      <q-toggle v-model="editCluster.favorite" label="Favorite"></q-toggle>-->
 
 
             <div class="flex justify-end">
               <q-btn label="Cancel" @click="Cancel"  style="color: white" class="q-mr-lg"></q-btn>
-              <q-btn v-if="authUser.siteColor" label="Submit"  type="submit" :style="{color: authUser?.buttonTextColor || white, background: authUser?.buttonColor|| '#1976D2' }"></q-btn>
-              <q-btn v-else  label="Submit"  type="submit" color="primary"></q-btn>
+              <q-btn label="submit"  type="submit" :style="{color: authUser?.buttonTextColor || white, background: authUser?.buttonColor|| '#1976D2' }"></q-btn>
+
             </div>
 
           </q-form>

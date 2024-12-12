@@ -48,9 +48,9 @@ export default {
 
             <q-tab v-if="authUser.textColor" :style="{color: authUser.textColor}" name="Personalization" label="Personalization" />
             <q-tab  v-if="authUser.textColor" :style="{color: authUser.textColor}"  name="AccountDetails"  label="Account Details" />
-            <q-tab v-else style="color:#1976D2 " name="AccountDetails"  label="Account Details" />
+<!--            <q-tab v-else style="color:#1976D2 " name="AccountDetails"  label="Account Details" />-->
 
-            <q-tab  v-else style="color:#1976D2 "  name="Personalization" label="Personalization" />
+            <q-tab  v-else style="color:#1976D2"  name="Personalization" label="Personalization" />
             <q-tab  v-else style="color:#1976D2 " name="AccountDetails"  label="Account Details" />
 
 
@@ -121,7 +121,6 @@ export default {
 
                       </q-card>
                     </q-img>
-
                     <q-img v-else src="https://cdn.quasar.dev/img/parallax2.jpg">
                       <q-btn :style="{background: authUser?.buttonColor || blue , color:authUser?.buttonTextColor || white  }"  label="button"></q-btn>
                       <q-btn :style="{color: authUser?.buttonColor || white }" icon="flag" label="button"></q-btn>

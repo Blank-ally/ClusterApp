@@ -39,8 +39,7 @@ this.$router.push({name:'Cluster', params:{clusterId:this.cluster.id}})
     },
     getSyncList(){
         StarCollection.syncStarsWithImages(this.authUser, this.cluster, this.list)
-            .then(() => console.log())
-            .catch(error => console.log(error))
+
 
     },
 

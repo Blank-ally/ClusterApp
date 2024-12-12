@@ -96,6 +96,7 @@ export default class ClusterCollection {
      * @param {String} clusterId
      */
     static async getCluster(user, clusterId){
+        debugger
         console.log(clusterId)
         const ClusterRef = ClusterCollection.getClusterDocById(user,clusterId )
         console.log(` user ${user} , cLusterId  ${clusterId}, refs ${ClusterRef}`)

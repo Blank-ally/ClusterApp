@@ -48,7 +48,7 @@ export default {
       if(this.authUser?.id) {
 
         StarCollection.syncStars(this.authUser, this.currentCluster, this.list)
-            .catch(error => console.log(error))
+
       }
     },
     deleteCluster(){

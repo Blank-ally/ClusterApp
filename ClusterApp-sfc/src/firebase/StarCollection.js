@@ -14,6 +14,7 @@ import {
     limit
 } from "firebase/firestore";
 import ClusterCollection from "@/firebase/ClusterCollection.js";
+import Cluster from "@/components/models/Clust.js";
 import Star from "@/components/models/Star.js";
 import {ref, uploadBytes, getDownloadURL} from "firebase/storage";
 import {starStorage} from "@/firebase";
@@ -91,15 +92,24 @@ export default class StarCollection {
      */
 
     static async updateStar(user, cluster, star) {
-
-        if (star.photoURL && star.photoURL[0].name.endsWith('.jpg') ||star.photoURL[0].name.endsWith('.jpeg') || star.photoURL[0].name.endsWith('.png')|| star.photoURL[0].name.endsWith('.gif') || star.photoURL[0].name.endsWith('.webp')) {
-            StarCollection.addImage(user,cluster,star)
-        }
+debugger
+     if (star.photoURL &&
+         star.photoURL[0]
+         &&
+         star.photoURL[0]?.name?.endsWith('.jpg')
+         ||star.photoURL[0]?.name?.endsWith('.jpeg')
+         || star.photoURL[0]?.name?.endsWith('.png')
+         || star.photoURL[0]?.name?.endsWith('.gif')
+         || star.photoURL[0]?.name?.endsWith('.webp')
+     )
+     {
+          return StarCollection.addImage(user,cluster,star)
+     }
 
         const starDoc = StarCollection.getStarDoc(user, cluster, star);
-        return updateDoc(starDoc, star.toFirestore())
-            .catch(error => console.log(error))
-            ;
+        return updateDoc(starDoc, star.toFirestore()).catch(error => console.log(error))
+
+
     }
 
     /**
@@ -152,6 +162,28 @@ export default class StarCollection {
 
             );
 
+    }
+
+    /**
+     *@param {User} user
+     *@param {Cluster} cluster
+     *@param {String} starId
+     */
+    static async getStar(user,cluster,starId ) {
+        const starRef = StarCollection.getStarDocById(user,cluster,starId)
+        const docSnap = await getDoc(starRef.withConverter(Star));
+        return docSnap.data();
+
+    }
+
+    /**
+     *@param {User} user
+     *@param {Cluster} cluster
+     *@param {String} starId
+     */
+    static getStarDocById(user,cluster,starId ){
+        const starsCollection = StarCollection.getStarsCollection(user, cluster);
+        return doc(starsCollection, starId);
     }
     /**
      *@param {User} user
@@ -210,33 +242,10 @@ export default class StarCollection {
                 const starDoc = StarCollection.getStarDoc(user, cluster, star);
                 return updateDoc(starDoc, {photoURL: url});
             })
-            .then(docRef => {
-                console.log("star updated with image");
-            })
+
             .catch(error => {
                 console.error('error uploading image', error);
             })
-    }
-    /**
-     *@param {User} user
-     *@param {Cluster} cluster
-     *@param {String} starId
-     */
-    static async getStar(user,cluster,starId ) {
-        const starRef = StarCollection.getStarDocById(user,cluster,starId)
-        const docSnap = await getDoc(starRef.withConverter(Star));
-        return docSnap.data();
-
-    }
-
-    /**
-     *@param {User} user
-     *@param {Cluster} cluster
-     *@param {String} starId
-     */
-    static getStarDocById(user,cluster,starId ){
-        const starsCollection = StarCollection.getStarsCollection(user, cluster);
-        return doc(starsCollection, starId);
     }
 
 }

@@ -8,6 +8,7 @@ import ClassificationCollection from "@/firebase/ClassificationCollection.js";
 import StarCollection from "@/firebase/StarCollection.js";
 import HomeView from "@/views/HomeView.vue";
 
+
 export default {
   name: "EditStar",
   data: function() {
@@ -32,12 +33,20 @@ export default {
   },
 
   async mounted() {
+
+
     this.currentCluster =  await ClusterCollection.getCluster(this.authUser,this.clusterId)
+
     this.currentCluster.classifications = await ClassificationCollection.getClassifications(this.authUser,this.currentCluster)
+
     this.editStar = await StarCollection.getStar(this.authUser,this.currentCluster,this.starId)
+
+
   },
   methods:{
     editCurrentStar(){
+      debugger
+      console.log(this.authUser,this.currentCluster,this.editStar)
       StarCollection.updateStar(this.authUser,this.currentCluster,this.editStar)
           .then(() => this.$router.push({name: 'Cluster', params:{clusterId: this.clusterId}}))
           .catch(error => console.log(error))
@@ -51,7 +60,7 @@ export default {
       this.$router.push({name: 'Cluster',  params:{clusterId: this.clusterId}})
     },
     previewUploadImg(){
-      console.log('img', this.editStar.photoURL[0]);
+      console.log('img', this.editStar.photoURL);
       this.previewImg = URL.createObjectURL(this.editStar.photoURL[0])
     }
   }
@@ -89,9 +98,11 @@ export default {
               </div>
               <div class="col-md-6 col-12">
 
+
                 <q-img v-if="previewImg" :src="previewImg" :ratio="4/3"></q-img>
-                <q-img v-else-if="editStar.photoURL?.trim() !== '' " :src="editStar.photoURL" :ratio="4/3"></q-img>
+                <q-img v-else-if="editStar?.photoURL !== '' " :src="editStar.photoURL" :ratio="4/3"></q-img>
                 <q-img v-else src="@/assets/StarDefault.png" :ratio="4/3"></q-img>
+
 
                 <q-input
                     filled
@@ -100,7 +111,6 @@ export default {
                     bg-color="white"
                     type="file"
                     class="q-ma-md"
-                    accept=".jpg, image/*"
                     @change="previewUploadImg"
                 ></q-input>
               </div>
@@ -111,6 +121,7 @@ export default {
                     v-model="editStar.name"
                     label="Star Name"
                     lazy-rules
+                    accept=".jpg, image/*"
                     bg-color="white"
                     class="q-ma-md"
                     :rules="[ val => val && val.length > 0 || 'Please type something']"
@@ -145,8 +156,8 @@ export default {
 
             <div class="flex justify-end">
               <q-btn label="Cancel" @click="cancel"  style="color: white" class="q-mr-lg"></q-btn>
-              <q-btn v-if="authUser.siteColor" label="Submit"  type="submit" :style="{color: authUser?.buttonTextColor || white, background: authUser?.buttonColor|| '#1976D2' }"></q-btn>
-              <q-btn v-else  label="Submit"  type="submit" color="primary"></q-btn>
+              <q-btn label="Submit"  type="submit" :style="{color: authUser?.buttonTextColor || white, background: authUser?.buttonColor|| '#1976D2' }"></q-btn>
+
 
 
             </div>

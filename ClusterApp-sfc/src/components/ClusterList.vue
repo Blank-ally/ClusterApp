@@ -32,7 +32,7 @@ export default {
     search(keyword){
       console.log('search: ', keyword);
       ClusterCollection.searchCluster(this.authUser,keyword.toLowerCase(),this.list)
-          .catch(error => console.log(error))
+
     },
 
   },

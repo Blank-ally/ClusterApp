@@ -68,7 +68,7 @@ export default {
         <div class="col-md-6 col-12 ">
           <q-form
               @submit.prevent="addnewStar"
-              reset="onReset"
+
               class="q-gutter-xl form-background"
           >
             <div class="row">

@@ -1,8 +1,7 @@
 import {db, userStorage} from '@/firebase';
 import {collection, doc, getDoc, onSnapshot, setDoc, updateDoc} from "firebase/firestore";
 import User from '@/components/models/User.js';
-import Cluster from "@/components/models/Clust.js";
-import Star from "@/components/models/Star.js";
+
 import {getDownloadURL, ref, uploadBytes} from "firebase/storage";
 
 
